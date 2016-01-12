@@ -1,0 +1,98 @@
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+</head>
+
+<body>
+
+<!-- Navigation -->
+<div class="navMain">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header"> 
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*@Html.ActionLink("Alen's Car dealership", "Index", "Home", new {
+                            area = ""
+                        }, new {
+                            @class = "navbar-brand"
+                        })*@
+
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <img src="../../Content/images/car3.png" alt="">
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    @Html.Partial("_LoginPartial")
+                    @*<li style="padding-top: 6px;">
+                                <div class="col-sm-3 col-md-12">
+                                    <form class="navbar-form" role="search">
+                                        <div style="display: inline-block; float: left;">
+                                            <input id="search_input" style="width: 150px; height: 23px;" placeholder="Search..." type="text" name="search">
+                                        </div>
+                                        <div style="display: inline-block; float: left; margin-left: 5px;">
+                                            <button type="submit" class="submit-with-icon">
+                                                <span class="glyphicon glyphicon-search" style="font-size: 18px; padding-top: 1px;"></span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>*@
+                    @*<li style="padding-top: 6px;">
+                                    <form class="navbar-form" role="search">
+                                        <div style="display: inline-block; float: left;">
+                                            <input id="search_input" style="width: 150px; height: 23px;" placeholder="Search..." type="text" name="search">
+                                        </div>
+                                        <div style="display: inline-block; float: left; margin-left: 5px;">
+                                            <button type="submit" class="submit-with-icon">
+                                                <span class="glyphicon glyphicon-search" style="font-size: 18px; padding-top: 1px;"></span>
+                                            </button>
+                                        </div>
+                                    </form>
+                            </li>*@
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+</div>
+
+@RenderBody()
+<div class="container">
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="text-center text-muted">Copyright &copy; Williams Alen Guterman 2015</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+</div>
+<!-- /.container -->
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/scripts/layoutJS")
+
+
+</body>
+
+</html>
