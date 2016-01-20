@@ -2,49 +2,98 @@
     ViewBag.Title = "Home";
 }
 
-    <!-- Full Page Image Background Carousel Header -->
-    <header id="homeCarousel" class="carousel fade">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#homeCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#homeCarousel" data-slide-to="1"></li>
-            <li data-target="#homeCarousel" data-slide-to="2"></li>
-            <li data-target="#homeCarousel" data-slide-to="3"></li>
+@section script{
+    <script>
+        $('.datepicker').datepicker();
+        $('.dp').datepicker();
 
-        </ol>
-        <!-- Wrapper for Slides -->
-        <div class="carousel-inner">
-            <div class="item active">
-                <div class="fill" id="transmission0"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 1</h2>
-                </div>
-            </div>
-            <div class="item">
-                <div class="fill" id="transmission1"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 2</h2>
-                </div>
-            </div>
-            <div class="item">
-                <div class="fill" id="transmission2"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 3</h2>
-                </div>
-            </div>
-            <div class="item">
-                <div class="fill" id="transmission3"></div>
-                <div class="carousel-caption">
-                    <h2>Caption 4</h2>
+        $(function () {
+            $('#datetimepicker6').datetimepicker();
+            $('#datetimepicker7').datetimepicker({
+                useCurrent: false //Important! See issue #1075
+            });
+            $("#datetimepicker6").on("dp.change", function (e) {
+                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker7").on("dp.change", function (e) {
+                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+
+    </script>
+}
+
+<div class="overlay">
+    <h1>Tittle</h1>
+    <div class="row">
+        <input type="text" class="datepicker" style="color: red;"/><br/>
+        <input type="text" class="dp" style="color: red;" /><br />
+        <input data-provide="datepicker" data-date-format="dd/mm/yyyy" style="color: red;"><br/>
+        <div class="row">
+            <div class='col-sm-6'>
+                <div class="form-group">
+                    <div class='input-group date dp' id='datetimepicker1'>
+                        <input type='text' class="form-control"/>
+                        <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span><br/>
+                            </span>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Controls -->
-        <a class="left carousel-control" href="#homeCarousel" data-slide="prev">
-            <span class="icon-prev"></span>
-        </a>
-        <a class="right carousel-control" href="#homeCarousel" data-slide="next">
-            <span class="icon-next"></span>
-        </a>
+        <div class='col-md-5 cen'>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker6'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-5'>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker7'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    </header>
+<!-- Full Page Image Background Carousel Header -->
+<div id="homeCarousel" class="carousel fade">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#homeCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#homeCarousel" data-slide-to="1"></li>
+        <li data-target="#homeCarousel" data-slide-to="2"></li>
+        <li data-target="#homeCarousel" data-slide-to="3"></li>
+    </ol>
+    <!-- Wrapper for Slides -->
+    <div class="carousel-inner">
+
+        <div class="item active">
+            <div class="fill" id="transmission0"></div>
+        </div>
+        <div class="item">
+            <div class="fill" id="transmission1"></div>
+        </div>
+        <div class="item">
+            <div class="fill" id="transmission2"></div>
+        </div>
+        <div class="item">
+            <div class="fill" id="transmission3"></div>
+        </div>
+    </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#homeCarousel" data-slide="prev">
+        <span class="icon-prev"></span>
+    </a>
+    <a class="right carousel-control" href="#homeCarousel" data-slide="next">
+        <span class="icon-next"></span>
+    </a>
+</div>

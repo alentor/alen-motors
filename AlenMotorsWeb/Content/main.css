@@ -18,13 +18,14 @@ body {
     padding-bottom: 15px;
 }
 
-.navMain .nav >li >a {
-  padding-top: 30px;
-  /*padding-bottom: 30px;*/
+.navMain .nav > li > a {
+    padding-top: 30px;
+    /*padding-bottom: 30px;*/
 }
+
 .navMain .navbar-toggle {
-  padding: 10px;
-  margin: 14px 15px 15px 0;
+    padding: 10px;
+    margin: 14px 15px 15px 0;
 }
 
 
@@ -138,3 +139,35 @@ footer { padding-top: 15px; }
     text-align: center;
     background-color: #3d3d3d;
 }
+
+.overlay {
+    background-color: red;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    color: #fff;
+    position: absolute;
+    z-index: 12;
+    top: 55%;
+    width: 400px;
+    text-align: center;
+}
+
+@media (min-width: 1200px) {
+    .overlay { background-color: black; }
+}
+
+@media (min-width: 992px) {
+    .overlay { background-color: yellow; }
+}
+
+@media (min-width: 768px) {
+    .overlay { background-color: green; }    
+}
+
+@media (max-width: 767px) {
+    .overlay { background-color: pink; }    
+}
+
