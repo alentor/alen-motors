@@ -2,9 +2,22 @@
     <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
     <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 </ul>*@
-<li>
-    <a href="#about">Login</a>
-</li>
-<li>
-    <a href="#contact">Register</a>
-</li>
+@if (Request.IsAuthenticated)
+{
+
+}
+else {
+    <li>
+
+        <form class="navbar-form navbar-nav">
+            <div class="form-group">
+                <input type="text" class="form-control input-sm" name="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control input-sm" name="password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-sm btnMain">Sign In</button>
+        </form>
+    </li>
+}
+ 

@@ -9,7 +9,6 @@ body {
     /*background-color: #000000;*/
 }
 
-
 .input-group-addon { background-color: #000000; }
 
 .navbar {
@@ -28,7 +27,12 @@ body {
 }
 
 .navMain .nav > li > a {
-    padding-top: 30px;
+    padding-top: 25px;
+    /*padding-bottom: 30px;*/
+}
+
+.navMain .nav > li > form {
+    padding-top: 12px;
     /*padding-bottom: 30px;*/
 }
 
@@ -166,6 +170,16 @@ footer { padding-top: 15px; }
     /*border: 10px solid black;*/
 }
 
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
+  background: #eeeeee;
+}
+.dateTimePickerMain table thead tr:first-child th:hover{
+  background: red;
+}
+.test {
+    background-color: red;
+}
+
 .panel { border: 1px solid #656565; }
 
 .table { text-align: center; }
@@ -221,11 +235,17 @@ footer { padding-top: 15px; }
 @media (max-height: 480px) {
     .overlay {
         /*background-color: purple;*/
-        width: 100%;
+        /*width: 100%;*/
         top: 20%;
     }
     .carousel-indicators {
         /*background-color: red;*/
         z-index: 0; 
     }    
+}
+
+.mystyle input[type="text"] {
+   height: 14px;
+   font-size: 10px;
+   line-height: 14px;
 }

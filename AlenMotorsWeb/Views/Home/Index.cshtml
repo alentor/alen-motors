@@ -4,8 +4,7 @@
 
 @section script{
     <script>
-        $('.datepicker').datepicker();
-
+        //$('.datepicker').datepicker();
         $(function() {
             $('#datetimepicker6').datetimepicker({
                 useCurrent: false, //Important! See issue #1075
@@ -30,6 +29,19 @@
             $("#datetimepicker7").on("dp.change", function(e) {
                 $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
             });
+
+            //// The following code is to change the hover color of the text
+
+            //$("#datetimepicker6").addClass(".test");
+
+            // $('#datetimepicker6').on(
+            //'dp.show',
+            //function (e) {
+            //    $(".bootstrap-datetimepicker-widget").css(
+            //    "background", "red");
+            //});
+
+
             //var ismobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
             //if (!ismobile) {
             //    $("#datetimepicker7 input").addClass('no-grey').prop('readonly', true);
