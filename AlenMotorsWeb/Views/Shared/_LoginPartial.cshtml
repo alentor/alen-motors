@@ -1,23 +1,143 @@
-﻿@*<ul class="nav navbar-nav navbar-right">
-    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-</ul>*@
-@if (Request.IsAuthenticated)
-{
+﻿@model alenMotorsWeb.Models.LoginViewModel
 
-}
-else {
+@if (User.Identity.IsAuthenticated) {
     <li>
-
-        <form class="navbar-form navbar-nav">
-            <div class="form-group">
-                <input type="text" class="form-control input-sm" name="username" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control input-sm" name="password" placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-sm btnMain">Sign In</button>
-        </form>
+        @Html.ActionLink(User.Identity.Name, "Account", "Account")
+    </li>
+    <li>
+        @Html.ActionLink("Logout", "LogOut", "Account")
+    </li>
+    <li>
+        @Html.ActionLink("Contact", "Contact", "Home")
     </li>
 }
- 
+else {
+    string switchStr = ViewBag.Title;
+
+    switch (switchStr) {
+        case "Alen Motors - Login":{
+            <li>
+                @Html.ActionLink("Register", "Register", "Account")
+            </li>
+            <li>
+                @Html.ActionLink("Contact", "Contact", "Home")
+            </li>
+
+            break;
+        }
+        case "Alen Motors - Registration":{
+            <li>
+                @using (Html.BeginForm("Login", "Account", new {ReturnUrl = Request["returnUrl"]}, FormMethod.Post, new {@class = "navbar-form navbar-nav",})) {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger nav-text-danger"})
+                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control input-sm", @placeholder = Html.DisplayNameFor(m => m.Email)})
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger nav-text-danger"}) @Html.PasswordFor(m => m.Password, new {@class = "form-control input-sm", @placeholder = Html.DisplayNameFor(m => m.Password)})
+                    </div>
+                    <input type="submit" value="Log in" class="btn btn-sm btnMain"/>
+                }
+            </li>
+            <li>
+                @Html.ActionLink("Contact", "Contact", "Home")
+            </li>
+            break;
+        }
+
+        default:{
+            <li>
+                @using (Html.BeginForm("Login", "Account", new {ReturnUrl = Request["returnUrl"]}, FormMethod.Post, new {@class = "navbar-form navbar-nav",})) {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger nav-text-danger"})
+                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control input-sm", @placeholder = Html.DisplayNameFor(m => m.Email)})
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger nav-text-danger"}) @Html.PasswordFor(m => m.Password, new {@class = "form-control input-sm", @placeholder = Html.DisplayNameFor(m => m.Password)})
+                    </div>
+                    <input type="submit" value="Log in" class="btn btn-sm btnMain"/>
+                }
+            </li>
+            <li>
+                @Html.ActionLink("Register", "Register", "Account")
+            </li>
+            <li>
+                @Html.ActionLink("Contact", "Contact", "Home")
+            </li>
+            break;
+        }
+    }
+}
+@*else {
+    <li>
+        @Html.ActionLink("Log in", "Login", "Account")
+    </li>
+    <li>
+        @Html.ActionLink("Register", "Register", "Account")
+    </li>
+    <li>
+        @Html.ActionLink("Contact", "Contact", "Home")
+    </li>
+}*@
+
+@*@{
+    string switchStr = ViewBag.Title;
+
+    switch (switchStr) {
+        case "Alen Motors - Login":{
+            <li>
+                @Html.ActionLink("Register", "Register", "Account")
+            </li>
+            <li>
+                @Html.ActionLink("Contact", "Contact", "Home")
+            </li>
+
+            break;
+        }
+        case "Alen Motors - Registration":{
+            <li>
+                @using (Html.BeginForm("Login", "Account", new {ReturnUrl = Request["returnUrl"]}, FormMethod.Post, new {@class = "navbar-form navbar-nav",})) {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger nav-text-danger"})
+                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control input-sm", @placeholder = Html.DisplayNameFor(m => m.Email)})
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger nav-text-danger"}) @Html.PasswordFor(m => m.Password, new {@class = "form-control input-sm", @placeholder = Html.DisplayNameFor(m => m.Password)})
+                    </div>
+                    <input type="submit" value="Log in" class="btn btn-sm btnMain"/>
+                }
+            </li>
+            <li>
+                @Html.ActionLink("Contact", "Contact", "Home")
+            </li>
+            break;
+        }
+
+        default:{
+            <li>
+                @using (Html.BeginForm("Login", "Account", new {ReturnUrl = Request["returnUrl"]}, FormMethod.Post, new {@class = "navbar-form navbar-nav",})) {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Email, "", new {@class = "text-danger nav-text-danger"})
+                        @Html.TextBoxFor(m => m.Email, new {@class = "form-control input-sm", @placeholder = Html.DisplayNameFor(m => m.Email)})
+                    </div>
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger nav-text-danger"}) @Html.PasswordFor(m => m.Password, new {@class = "form-control input-sm", @placeholder = Html.DisplayNameFor(m => m.Password)})
+                    </div>
+                    <input type="submit" value="Log in" class="btn btn-sm btnMain"/>
+                }
+            </li>
+            <li>
+                @Html.ActionLink("Register", "Register", "Account")
+            </li>
+            <li>
+                @Html.ActionLink("Contact", "Contact", "Home")
+            </li>
+            break;
+        }
+    }
+}*@

@@ -4,6 +4,10 @@ body {
     background-color: #222222;
 }
 
+body {
+    margin-bottom: 60px;
+}
+
 .glyphicon {
     /*color: green;*/
     /*background-color: #000000;*/
@@ -23,7 +27,13 @@ body {
 .body-content {
     height: 100%;
     padding-top: 50px;
-    padding-bottom: 15px;
+    /*padding-bottom: 15px;*/
+}
+
+.mainRow {
+    /*padding-top: 45px;*/
+    margin-top: 50px;
+    /*margin-left: 150px;*/
 }
 
 .navMain .nav > li > a {
@@ -32,7 +42,7 @@ body {
 }
 
 .navMain .nav > li > form {
-    padding-top: 12px;
+    padding-top: 11px;
     /*padding-bottom: 30px;*/
 }
 
@@ -41,7 +51,7 @@ body {
     margin: 14px 15px 15px 0;
 }
 
-footer { padding-top: 15px; }
+footer { padding-top: 9px; }
 
 .carousel-inner, .carousel, .item, .active { height: 100%; }
 
@@ -101,8 +111,6 @@ footer { padding-top: 15px; }
 /* Added z-index to raise the left right controls to the top */
 
 .carousel-control { z-index: 3; }
-
-
 
 .btnMain {
     color: #bbbbbb;
@@ -170,15 +178,11 @@ footer { padding-top: 15px; }
     /*border: 10px solid black;*/
 }
 
-.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
-  background: #eeeeee;
-}
-.dateTimePickerMain table thead tr:first-child th:hover{
-  background: red;
-}
-.test {
-    background-color: red;
-}
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover { background: #eeeeee; }
+
+.dateTimePickerMain table thead tr:first-child th:hover { background: red; }
+
+.test { background-color: red; }
 
 .panel { border: 1px solid #656565; }
 
@@ -208,44 +212,28 @@ footer { padding-top: 15px; }
     border-radius: 4px;
 }
 
-/*@media (min-width: 1200px) {
-    .overlay { background-color: black; }
-}
+.input-validation-error { border: 2px solid #ff0000 !important; }
 
-@media (min-width: 992px) {
-    .overlay { background-color: yellow; }
-}
+.nav-text-danger { display: none; }
 
-@media (min-width: 768px) {
-    .overlay { background-color: green; }
-}*/
 
 @media (max-width: 767px) {
     .overlay {
-        /*background-color: pink;*/
         width: 100%;
         top: 20%;
     }
-    .carousel-indicators {
-        /*background-color: red;*/
-        z-index: 0; 
-    }    
+
+    .carousel-indicators { display: none; }
 }
 
 @media (max-height: 480px) {
-    .overlay {
-        /*background-color: purple;*/
-        /*width: 100%;*/
-        top: 20%;
-    }
-    .carousel-indicators {
-        /*background-color: red;*/
-        z-index: 0; 
-    }    
+    .overlay { top: 20%; }
+
+    .carousel-indicators { display: none; }
 }
 
-.mystyle input[type="text"] {
-   height: 14px;
-   font-size: 10px;
-   line-height: 14px;
-}
+/*.mystyle input[type="text"] {
+    height: 14px;
+    font-size: 10px;
+    line-height: 14px;
+}*/

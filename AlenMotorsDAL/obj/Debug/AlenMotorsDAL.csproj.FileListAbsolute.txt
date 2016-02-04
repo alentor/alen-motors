@@ -1,5 +1,4 @@
 E:\Porjects\c#\AlenMotors\AlenMotorsDAL\bin\Debug\AlenMotorsDAL.dll
 E:\Porjects\c#\AlenMotors\AlenMotorsDAL\bin\Debug\AlenMotorsDAL.pdb
-E:\Porjects\c#\AlenMotors\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.csprojResolveAssemblyReference.cache
 E:\Porjects\c#\AlenMotors\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.dll
 E:\Porjects\c#\AlenMotors\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.pdb
