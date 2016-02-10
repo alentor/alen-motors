@@ -29,8 +29,8 @@ namespace alenMotorsWeb.Models {
 
         [EmailAddress]
         [Display(Name = "Confirm Email")]
-        [Compare("Email", ErrorMessage = "The Email and confirmation password do not match.")]
-        public string ConfirmEmail { get; set; }
+        [Compare("Email", ErrorMessage = "The Email and Email password do not match.")]
+        public string ConfirmEmail{get; set;}
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -63,9 +63,8 @@ namespace alenMotorsWeb.Models {
         [Required(ErrorMessage = "You must provide a PhoneNumber")]
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone number")]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
-        ErrorMessage = "Not a valid Phone number")]
-        public string PhoneNumber{get; set;}
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
+        public int PhoneNumber{get; set;}
     }
 
     public class ForgotPasswordViewModel {

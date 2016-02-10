@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="84b41d45396845209c3168cf8ed55b1b" Name="Diagram1">
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Account" Width="1.5" PointX="4.625" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.AccountInRole" Width="1.5" PointX="2.5" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Order" Width="1.5" PointX="6.625" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Role" Width="1.5" PointX="0.5" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Vehicle" Width="1.5" PointX="8.625" PointY="0.625" IsExpanded="true" />
+        <AssociationConnector Association="AlenMotorsDbModel.FK_Accounts_AccountID" ManuallyRouted="false" />
+        <AssociationConnector Association="AlenMotorsDbModel.FK_Orders_Accounts" ManuallyRouted="false" />
+        <AssociationConnector Association="AlenMotorsDbModel.FK_Roles_RoleID" ManuallyRouted="false" />
+        <AssociationConnector Association="AlenMotorsDbModel.FK_Orders_Vehicles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

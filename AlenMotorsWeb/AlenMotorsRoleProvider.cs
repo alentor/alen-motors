@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
+using AlenMotorsDAL;
 
 namespace alenMotorsWeb {
     public class AlenMotorsRoleProvider: RoleProvider {
@@ -17,16 +18,10 @@ namespace alenMotorsWeb {
             //throw new NotImplementedException();
         }
 
-        public override string[] GetRolesForUser(string username) {
-            string[] roles = {"admin"};
-            if (username == "b") {
-                return roles;
-            }
-            if (username == "c") {
-                roles[0] = "test1";
-                return roles;
-            }
-            return roles;
+        public override string[] GetRolesForUser(string email) {
+            UserRoleManagerResult userRoleManagerResult =  UserRoleManager.GetUserRoles(email);
+            return userRoleManagerResult?.Roles;
+
         }
 
         public override void CreateRole(string roleName) {

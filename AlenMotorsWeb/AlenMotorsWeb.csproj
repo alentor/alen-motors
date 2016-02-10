@@ -133,6 +133,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\AlenMotorsDb.mdf" />
+    <Content Include="App_Data\AlenMotorsDb_log.ldf">
+      <DependentUpon>AlenMotorsDb.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap-datepicker.standalone.css" />
@@ -402,8 +406,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlenMotorsDAL\AlenMotorsDAL.csproj">
+      <Project>{51f9f504-1878-4f2b-a018-ba315ca301ef}</Project>
+      <Name>AlenMotorsDAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
