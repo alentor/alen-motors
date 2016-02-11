@@ -21,4 +21,13 @@ D:\Porjects\c#\AlenMotors\AlenMotorsDAL\bin\Debug\EntityFramework.xml
 D:\Porjects\c#\AlenMotors\AlenMotorsDAL\bin\Debug\EntityFramework.SqlServer.xml
 D:\Porjects\c#\AlenMotors\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.dll
 D:\Porjects\c#\AlenMotors\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.pdb
-D:\Porjects\c#\AlenMotors\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.csprojResolveAssemblyReference.cache
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\bin\Debug\AlenMotorsDAL.dll.config
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\bin\Debug\AlenMotorsDAL.dll
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\bin\Debug\AlenMotorsDAL.pdb
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\bin\Debug\EntityFramework.dll
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\bin\Debug\EntityFramework.SqlServer.dll
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\bin\Debug\EntityFramework.xml
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\bin\Debug\EntityFramework.SqlServer.xml
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.dll
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.pdb
+F:\projects\AlenMotors-10.02.16\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.csprojResolveAssemblyReference.cache

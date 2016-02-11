@@ -4,9 +4,11 @@ body {
     background-color: #222222;
 }
 
-body {
-    margin-bottom: 60px;
-}
+body { margin-bottom: 60px; }
+
+#disabledInput { color: #222222; }
+
+.input-sm { color: #222222; }
 
 .glyphicon {
     /*color: green;*/

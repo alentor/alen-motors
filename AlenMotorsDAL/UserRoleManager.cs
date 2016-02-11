@@ -32,12 +32,13 @@ namespace AlenMotorsDAL {
         /// </summary>
         /// <param name="email">The user's email</param>
         /// <param name="roleName">The role to add to the user</param>
-        /// <returns>Return true on successful operation, else a string with the error message</returns>
+        /// <returns>Return true on successful operation, else a string with an error message</returns>
         public static UserRoleManagerResult AddRoleToUser(string email, string roleName) {
             UserRoleManagerResult userManagerResult = new UserRoleManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
-                    foreach (Account account in alenMotorsDbEntities.Accounts.ToList().Where(account => account.Email.Replace(" ", string.Empty) == email)) {
+                    foreach (
+                    Account account in alenMotorsDbEntities.Accounts.ToList().Where(account => account.Email.Replace(" ", string.Empty) == email)) {
                         Role roleToAdd = Enumerable.FirstOrDefault(alenMotorsDbEntities.Roles, role => role.RoleName == roleName);
                         account.AccountsInRoles.Add(new AccountInRole {AccountID = account.AccountID, RoleID = roleToAdd.RoleID});
                         alenMotorsDbEntities.SaveChanges();
@@ -58,7 +59,7 @@ namespace AlenMotorsDAL {
         /// </summary>
         /// <param name="email">The user's email</param>
         /// <param name="roleName">The role to remove from the user</param>
-        /// <returns>Return true on successful operation, else a string with the error message</returns>
+        /// <returns>Return true on successful operation, else a string with an error message</returns>
         public static UserRoleManagerResult RemoveRole(string email, string roleName) {
             UserRoleManagerResult userManagerResult = new UserRoleManagerResult();
             try {
@@ -85,9 +86,14 @@ namespace AlenMotorsDAL {
             }
         }
 
+        /// <summary>
+        /// Gets all the Roles which the user belongs to
+        /// </summary>
+        /// <param name="email">The users mail</param>
+        /// <returns>Returns all the names of roles which the user belongs to (string[]), else a string with an error message</returns>
         public static UserRoleManagerResult GetUserRoles(string email) {
             UserRoleManagerResult userManagerResult = new UserRoleManagerResult();
-            List<Role> roles = new List <Role>();
+            List <Role> roles = new List <Role>();
             List <string> userRoles = new List <string>();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
@@ -95,7 +101,9 @@ namespace AlenMotorsDAL {
                     foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
                         if (account.Email.Replace(" ", string.Empty) == email) {
                             foreach (AccountInRole accountInRole in account.AccountsInRoles.ToList()) {
-                                userRoles.AddRange(from role in roles where role.RoleID == accountInRole.RoleID select role.RoleName.Replace(" ", string.Empty));
+                                userRoles.AddRange(from role in roles
+                                                   where role.RoleID == accountInRole.RoleID
+                                                   select role.RoleName.Replace(" ", string.Empty));
                                 userManagerResult.Roles = userRoles.ToArray();
                                 return userManagerResult;
                             }

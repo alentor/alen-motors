@@ -11,5 +11,11 @@ namespace AlenMotorsDAL {
     public class UserManagerResult {
         public bool Success{get; set;}
         public string ErrorMessage{get; set;}
+        public Account User{get; set;}
+
+        public UserManagerResult() {
+            Success = false;
+        }
+
     }
 }

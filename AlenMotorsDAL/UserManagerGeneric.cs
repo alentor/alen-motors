@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AlenMotorsDAL {
     internal static class UserManagerGeneric {
         /// <summary>
-        /// Encodes the password(string) using SHA-1 Encryption algorithm with additional 64base string for added security 
+        /// Encodes the password(string) using SHA-1 Encryption algorithm with additional 64base string(Generated from salt) for added security 
         /// </summary>
         /// <param name="password">Provide the password</param>
         /// <param name="salt">Proved the salt. An additinal encryption parameter</param>

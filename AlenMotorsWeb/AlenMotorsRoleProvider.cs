@@ -19,7 +19,13 @@ namespace alenMotorsWeb {
         }
 
         public override string[] GetRolesForUser(string email) {
+
             UserRoleManagerResult userRoleManagerResult =  UserRoleManager.GetUserRoles(email);
+            if (userRoleManagerResult == null) {
+                // remove in production version, only for protyping, or until roles are implanted
+                userRoleManagerResult = new UserRoleManagerResult {Roles = new[] {"Developer"}};
+                //userRoleManagerResult = new UserRoleManagerResult { Roles = new[] { "" } };
+            }
             return userRoleManagerResult?.Roles;
 
         }

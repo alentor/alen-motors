@@ -1,4 +1,5 @@
-﻿@model alenMotorsWeb.Models.RegisterViewModel
+﻿
+@model alenMotorsWeb.Models.RegisterViewModel
 
 @{
     ViewBag.Title = "Alen Motors - Registration";
@@ -7,7 +8,7 @@
 @section script{
     <script>
         $(function() {
-            $('#BirthDatPicker').datetimepicker({
+            $('#BirthDatePicker').datetimepicker({
                 useCurrent: false, //Important! See issue #1075
                 format: 'DD/MM/YYYY',
                 widgetPositioning: {
@@ -91,7 +92,7 @@
                 @Html.LabelFor(model => model.BirthDate, htmlAttributes:new {@class = "control-label col-md-4"})
                 <div class="col-md-5">
                     @*@Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control input-sm" } })*@
-                    @Html.TextBoxFor(model => model.BirthDate, new {@id = "BirthDatPicker", @class = "form-control input-sm text-center", @*placeholder = "25/03/1991"*@})
+                    @Html.TextBoxFor(model => model.BirthDate, new {@id = "BirthDatePicker", @class = "form-control input-sm text-center", @*placeholder = "25/03/1991"*@})
                     @Html.ValidationMessageFor(model => model.BirthDate, "", new {@class = "text-danger"})
                 </div>
             </div>
