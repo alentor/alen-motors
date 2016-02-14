@@ -52,32 +52,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs">
-      <DependentUpon>AlenMotorsDB.tt</DependentUpon>
+      <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="AccountInRole.cs">
-      <DependentUpon>AlenMotorsDB.tt</DependentUpon>
+      <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AlenMotorsDB.Context.cs">
+    <Compile Include="AlenMotorsDBmodel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AlenMotorsDB.Context.tt</DependentUpon>
+      <DependentUpon>AlenMotorsDBmodel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="AlenMotorsDB.cs">
+    <Compile Include="AlenMotorsDBmodel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AlenMotorsDB.tt</DependentUpon>
+      <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AlenMotorsDB.Designer.cs">
+    <Compile Include="AlenMotorsDBmodel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AlenMotorsDB.edmx</DependentUpon>
+      <DependentUpon>AlenMotorsDBmodel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Branch.cs">
+      <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Order.cs">
-      <DependentUpon>AlenMotorsDB.tt</DependentUpon>
+      <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs">
-      <DependentUpon>AlenMotorsDB.tt</DependentUpon>
+      <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserManager.cs" />
     <Compile Include="UserManagerGeneric.cs" />
@@ -85,16 +88,16 @@
     <Compile Include="UserRoleManager.cs" />
     <Compile Include="UserRoleManagerResult.cs" />
     <Compile Include="Vehicle.cs">
-      <DependentUpon>AlenMotorsDB.tt</DependentUpon>
+      <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="AlenMotorsDB.edmx">
+    <EntityDeploy Include="AlenMotorsDBmodel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AlenMotorsDB.Designer.cs</LastGenOutput>
+      <LastGenOutput>AlenMotorsDBmodel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="AlenMotorsDB.edmx.diagram">
-      <DependentUpon>AlenMotorsDB.edmx</DependentUpon>
+    <None Include="AlenMotorsDBmodel.edmx.diagram">
+      <DependentUpon>AlenMotorsDBmodel.edmx</DependentUpon>
     </None>
     <None Include="App.Config" />
     <None Include="packages.config" />
@@ -103,15 +106,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AlenMotorsDB.Context.tt">
+    <Content Include="AlenMotorsDBmodel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AlenMotorsDB.edmx</DependentUpon>
-      <LastGenOutput>AlenMotorsDB.Context.cs</LastGenOutput>
+      <DependentUpon>AlenMotorsDBmodel.edmx</DependentUpon>
+      <LastGenOutput>AlenMotorsDBmodel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="AlenMotorsDB.tt">
+    <Content Include="AlenMotorsDBmodel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AlenMotorsDB.edmx</DependentUpon>
-      <LastGenOutput>AlenMotorsDB.cs</LastGenOutput>
+      <DependentUpon>AlenMotorsDBmodel.edmx</DependentUpon>
+      <LastGenOutput>AlenMotorsDBmodel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

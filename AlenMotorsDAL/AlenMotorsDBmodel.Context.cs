@@ -27,6 +27,7 @@ namespace AlenMotorsDAL
     
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AccountInRole> AccountInRoles { get; set; }
+        public virtual DbSet<Branch> Branches { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }

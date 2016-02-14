@@ -8,6 +8,9 @@ namespace alenMotorsWeb.Controllers {
         // GET => /Account/Register
         [AllowAnonymous]
         public ActionResult Register() {
+            if (User.Identity.IsAuthenticated) {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -17,17 +20,18 @@ namespace alenMotorsWeb.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModel model) {
             if (!ModelState.IsValid) {
+                ModelState.AddModelError("", "Model validation Error");
                 return View(model);
             }
-            UserManagerResult registerResult = UserManager.Register(model.Email,
-                                                                    model.FirstName,
-                                                                    model.LastName,
-                                                                    model.Password,
-                                                                    model.Gender,
-                                                                    model.PhoneNumber,
-                                                                    model.BirthDate);
+            UserManagerResult registerResult = UserManager.AddUser(model.Email,
+                                                                   model.FirstName,
+                                                                   model.LastName,
+                                                                   model.Password,
+                                                                   model.Gender,
+                                                                   model.PhoneNumber,
+                                                                   model.BirthDate);
             if (registerResult.Success) {
-                return RedirectToAction("Login", new LoginViewModel {Email = model.Email, Password = model.Password, RememberMe = false});
+                return RedirectToAction("Login", "Account");
             }
             ModelState.AddModelError("", registerResult.ErrorMessage);
             return View(model);
@@ -46,6 +50,7 @@ namespace alenMotorsWeb.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string returnUrl) {
             if (!ModelState.IsValid) {
+                ModelState.AddModelError("", "Model validation Error");
                 return View(model);
             }
             UserManagerResult loginResult = UserManager.Login(model.Email, model.Password);
@@ -68,6 +73,10 @@ namespace alenMotorsWeb.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ForgotPassword(ForgotPasswordViewModel model, string returlUrl) {
+            if (!ModelState.IsValid) {
+                ModelState.AddModelError("", "Model validation Error");
+                return View(model);
+            }
             if (model.Email == "a@a.com") {
                 ModelState.AddModelError("", "Email was sent with your credentials info");
                 return View(model);
@@ -76,10 +85,17 @@ namespace alenMotorsWeb.Controllers {
         }
 
         // GET => /Account/Account
-        [Authorize(Roles = "Developer")]
+        [Authorize(Roles = "Developer, User, Employee, Manager")]
         public ActionResult Account() {
-            AccountViewModels model = new AccountViewModels();
-            UserManagerResult getUserResult = UserManager.GetUserInformation(User.Identity.Name);
+            //if (Roles.IsUserInRole("Developer")) {
+            //    return RedirectToAction("Index", "Home");
+            //}
+            UserManagerResult getUserResult = UserManager.GetUser(User.Identity.Name);
+            AccountViewModel model = new AccountViewModel();
+            if (!getUserResult.Success) {
+                ModelState.AddModelError("", "Something went wrong");
+                return View(model);
+            }
             model.LastName = getUserResult.User.LastName.Replace(" ", string.Empty);
             model.FirstName = getUserResult.User.FirstName.Replace(" ", string.Empty);
             model.BirthDate = getUserResult.User.BirthDate.Replace(" ", string.Empty);
@@ -92,21 +108,21 @@ namespace alenMotorsWeb.Controllers {
         [HttpPost]
         [Authorize(Roles = "Developer")]
         [ValidateAntiForgeryToken]
-        public ActionResult Account(AccountViewModels model) {
+        public ActionResult Account(AccountViewModel model) {
             if (!ModelState.IsValid) {
+                ModelState.AddModelError("", "Model validation Error");
                 return View(model);
             }
             Account userAccount = new Account {
+                Email = User.Identity.Name,
                 LastName = model.LastName,
                 FirstName = model.FirstName,
                 BirthDate = model.BirthDate,
                 Gender = model.Gender,
                 PhoneNumber = model.PhoneNumber,
                 Password = model.Password,
-                // We are using registation date to pass the new password
-                RegistrationDate = model.NewPassword
             };
-            UserManagerResult updateUserResult = UserManager.UpdateUser(User.Identity.Name, userAccount);
+            UserManagerResult updateUserResult = UserManager.UpdateUser(User.Identity.Name, userAccount, model.NewPassword);
             if (updateUserResult.ErrorMessage != null) {
                 ModelState.AddModelError("", updateUserResult.ErrorMessage);
                 model.Password = "";

@@ -9,13 +9,21 @@ namespace AlenMotorsDAL {
         /// <summary>
         /// Add a new role to the avalaible roles
         /// </summary>
-        /// <param name="role">Name of the new role</param>
+        /// <param name="roleNameNew">Name of the new role</param>
         /// <returns>Return true on successful operation, else a string with the error message</returns>
-        public static UserRoleManagerResult AddRole(string role) {
+        public static UserRoleManagerResult AddRole(string roleNameNew) {
             UserRoleManagerResult userManagerResult = new UserRoleManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
-                    alenMotorsDbEntities.Roles.Add(new Role {RoleName = role});
+                    UserRoleManagerResult checkRoles = GetRoles();
+                    // Check if the role already exists, case senstive. Example  User = user will return as the role already exists
+                    if (
+                    checkRoles.Roles.Select(roleName => roleName.Equals(roleNameNew, StringComparison.CurrentCultureIgnoreCase)).
+                               Any(stringEqual => stringEqual)) {
+                        userManagerResult.ErrorMessage = "This Role already exists";
+                        return userManagerResult;
+                    }
+                    alenMotorsDbEntities.Roles.Add(new Role {RoleName = roleNameNew});
                     alenMotorsDbEntities.SaveChanges();
                 }
                 userManagerResult.Success = true;
@@ -37,13 +45,20 @@ namespace AlenMotorsDAL {
             UserRoleManagerResult userManagerResult = new UserRoleManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
-                    foreach (
-                    Account account in alenMotorsDbEntities.Accounts.ToList().Where(account => account.Email.Replace(" ", string.Empty) == email)) {
-                        Role roleToAdd = Enumerable.FirstOrDefault(alenMotorsDbEntities.Roles, role => role.RoleName == roleName);
-                        account.AccountsInRoles.Add(new AccountInRole {AccountID = account.AccountID, RoleID = roleToAdd.RoleID});
-                        alenMotorsDbEntities.SaveChanges();
-                        userManagerResult.Success = true;
-                        return userManagerResult;
+                    foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
+                        if (account.Email.Replace(" ", string.Empty) == email) {
+                            Role roleToAdd = Enumerable.FirstOrDefault(alenMotorsDbEntities.Roles,
+                                                                       role => role.RoleName.Replace(" ", string.Empty) == roleName);
+                            UserRoleManagerResult userInRoles = GetUserRoles(email);
+                            if (userInRoles.Roles.Any(userInRole => userInRole == roleName)) {
+                                userManagerResult.ErrorMessage = "User already in role";
+                                return userManagerResult;
+                            }
+                            account.AccountsInRoles.Add(new AccountInRole {AccountID = account.AccountID, RoleID = roleToAdd.RoleID});
+                            alenMotorsDbEntities.SaveChanges();
+                            userManagerResult.Success = true;
+                            return userManagerResult;
+                        }
                     }
                 }
                 return null;
@@ -54,13 +69,37 @@ namespace AlenMotorsDAL {
             }
         }
 
+        public static UserRoleManagerResult RemoveRole(string roleName) {
+            UserRoleManagerResult userManagerResult = new UserRoleManagerResult();
+            try {
+                using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    int roleIdToRemove;
+                    foreach (Role role in alenMotorsDbEntities.Roles.ToList().Where(role => role.RoleName.Replace(" ", String.Empty) == roleName)) {
+                        roleIdToRemove = role.RoleID;
+                        foreach (AccountInRole accountInRole in
+                        alenMotorsDbEntities.AccountInRoles.ToList().Where(accountInRolein => accountInRolein.RoleID == roleIdToRemove)) {
+                            alenMotorsDbEntities.AccountInRoles.Remove(accountInRole);
+                        }
+                        alenMotorsDbEntities.SaveChanges();
+                        userManagerResult.Success = true;
+                        return userManagerResult;
+                    }
+                }
+            }
+            catch (Exception ex) {
+                userManagerResult.ErrorMessage = ex.Message;
+                return userManagerResult;
+            }
+            return userManagerResult;
+        }
+
         /// <summary>
         /// Removes a role from the user
         /// </summary>
         /// <param name="email">The user's email</param>
         /// <param name="roleName">The role to remove from the user</param>
         /// <returns>Return true on successful operation, else a string with an error message</returns>
-        public static UserRoleManagerResult RemoveRole(string email, string roleName) {
+        public static UserRoleManagerResult RemoveRoleFromUser(string email, string roleName) {
             UserRoleManagerResult userManagerResult = new UserRoleManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
@@ -87,7 +126,7 @@ namespace AlenMotorsDAL {
         }
 
         /// <summary>
-        /// Gets all the Roles which the user belongs to
+        /// Gets all the Roles which the user belongs to, retunrs string[]
         /// </summary>
         /// <param name="email">The users mail</param>
         /// <returns>Returns all the names of roles which the user belongs to (string[]), else a string with an error message</returns>
@@ -104,18 +143,40 @@ namespace AlenMotorsDAL {
                                 userRoles.AddRange(from role in roles
                                                    where role.RoleID == accountInRole.RoleID
                                                    select role.RoleName.Replace(" ", string.Empty));
-                                userManagerResult.Roles = userRoles.ToArray();
-                                return userManagerResult;
                             }
+                            userManagerResult.Roles = userRoles;
+                            userManagerResult.Success = true;
+                            return userManagerResult;
                         }
                     }
+                    return null;
                 }
             }
             catch (Exception ex) {
                 userManagerResult.ErrorMessage = ex.Message;
                 return userManagerResult;
             }
-            return null;
+        }
+
+        /// <summary>
+        /// Get all roles names List<string>
+        /// </summary>
+        /// <returns>Returns a List<string> of all roles names, else a string with an error message </string></returns>
+        public static UserRoleManagerResult GetRoles() {
+            UserRoleManagerResult userManagerResult = new UserRoleManagerResult();
+            List <string> roles = new List <string>();
+            try {
+                using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    roles.AddRange(alenMotorsDbEntities.Roles.ToList().Select(role => role.RoleName.Replace(" ", string.Empty)));
+                }
+                userManagerResult.Success = true;
+                userManagerResult.Roles = roles;
+                return userManagerResult;
+            }
+            catch (Exception ex) {
+                userManagerResult.ErrorMessage = ex.Message;
+                return userManagerResult;
+            }
         }
     }
 }

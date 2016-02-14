@@ -1,6 +1,13 @@
-﻿@model alenMotorsWeb.Models.LoginViewModel
+﻿@using AlenMotorsDAL
+@model alenMotorsWeb.Models.LoginViewModel
 
 @if (User.Identity.IsAuthenticated) {
+    if (User.IsInRole("Employee")) {
+        <li>
+            @Html.ActionLink("[Manage]", "Manage", "Management")
+        </li>
+    }
+
     <li>
         @Html.ActionLink(User.Identity.Name, "Account", "Account")
     </li>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AlenMotorsDAL {
     public class UserRoleManagerResult {
         public bool Success{get; set;}
-        public string[] Roles{get; set;}
+        public List <string> Roles{get; set;}
         public string ErrorMessage{get; set;}
 
         public UserRoleManagerResult() {

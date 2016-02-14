@@ -27,15 +27,24 @@
           <Property Name="AccountID" Type="int" Nullable="false" />
           <Property Name="RoleID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Branches">
+          <Key>
+            <PropertyRef Name="BranchID" />
+          </Key>
+          <Property Name="BranchID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BranchName" Type="nchar" MaxLength="30" Nullable="false" />
+        </EntityType>
         <EntityType Name="Orders">
           <Key>
             <PropertyRef Name="OrderID" />
           </Key>
           <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AccountID" Type="int" Nullable="false" />
-          <Property Name="StartDate" Type="nchar" MaxLength="20" />
-          <Property Name="EndDate" Type="nchar" MaxLength="20" />
+          <Property Name="StartDate" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="EndDate" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="BranchID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -49,12 +58,14 @@
             <PropertyRef Name="VehicleID" />
           </Key>
           <Property Name="VehicleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LicensePlate" Type="int" Nullable="false" />
           <Property Name="VehicleManufacturer" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="VehicleManufacturYear" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="VehicleModel" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="VehicleDistanceTraveled" Type="int" Nullable="false" />
           <Property Name="VehicleTransmission" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="VehicleStatus" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="BranchID" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Accounts_AccountID">
           <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
@@ -92,6 +103,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Branches">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="BranchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Vehicles">
           <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
@@ -116,9 +139,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Vehicles_Branches">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="BranchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="AlenMotorsDbModelStoreContainer">
           <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccountsInRoles" EntityType="Self.AccountsInRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Branches" EntityType="Self.Branches" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vehicles" EntityType="Self.Vehicles" Schema="dbo" store:Type="Tables" />
@@ -134,6 +170,10 @@
             <End Role="Accounts" EntitySet="Accounts" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Branches" Association="Self.FK_Orders_Branches">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Vehicles" Association="Self.FK_Orders_Vehicles">
             <End Role="Vehicles" EntitySet="Vehicles" />
             <End Role="Orders" EntitySet="Orders" />
@@ -141,6 +181,10 @@
           <AssociationSet Name="FK_Roles_RoleID" Association="Self.FK_Roles_RoleID">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="AccountsInRoles" EntitySet="AccountsInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Branches" Association="Self.FK_Vehicles_Branches">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -174,16 +218,28 @@
           <NavigationProperty Name="Account" Relationship="Self.FK_Accounts_AccountID" FromRole="AccountsInRoles" ToRole="Accounts" />
           <NavigationProperty Name="Role" Relationship="Self.FK_Roles_RoleID" FromRole="AccountsInRoles" ToRole="Roles" />
         </EntityType>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="BranchID" />
+          </Key>
+          <Property Name="BranchID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BranchName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Branches" FromRole="Branches" ToRole="Orders" />
+          <NavigationProperty Name="Vehicles" Relationship="Self.FK_Vehicles_Branches" FromRole="Branches" ToRole="Vehicles" />
+        </EntityType>
         <EntityType Name="Order">
           <Key>
             <PropertyRef Name="OrderID" />
           </Key>
           <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AccountID" Type="Int32" Nullable="false" />
-          <Property Name="StartDate" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="EndDate" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="StartDate" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="EndDate" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="BranchID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="Self.FK_Orders_Accounts" FromRole="Orders" ToRole="Accounts" />
+          <NavigationProperty Name="Branch" Relationship="Self.FK_Orders_Branches" FromRole="Orders" ToRole="Branches" />
           <NavigationProperty Name="Vehicle" Relationship="Self.FK_Orders_Vehicles" FromRole="Orders" ToRole="Vehicles" />
         </EntityType>
         <EntityType Name="Role">
@@ -199,12 +255,15 @@
             <PropertyRef Name="VehicleID" />
           </Key>
           <Property Name="VehicleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LicensePlate" Type="Int32" Nullable="false" />
           <Property Name="VehicleManufacturer" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="VehicleManufacturYear" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="VehicleModel" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="VehicleDistanceTraveled" Type="Int32" Nullable="false" />
           <Property Name="VehicleTransmission" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="VehicleStatus" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="BranchID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Branch" Relationship="Self.FK_Vehicles_Branches" FromRole="Vehicles" ToRole="Branches" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Vehicles" FromRole="Vehicles" ToRole="Orders" />
         </EntityType>
         <Association Name="FK_Accounts_AccountID">
@@ -243,6 +302,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Branches">
+          <End Role="Branches" Type="Self.Branch" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="BranchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Branches">
+          <End Role="Branches" Type="Self.Branch" Multiplicity="1" />
+          <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchID" />
+            </Principal>
+            <Dependent Role="Vehicles">
+              <PropertyRef Name="BranchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Vehicles">
           <End Role="Vehicles" Type="Self.Vehicle" Multiplicity="1" />
           <End Role="Orders" Type="Self.Order" Multiplicity="*" />
@@ -258,6 +341,7 @@
         <EntityContainer Name="AlenMotorsDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="Self.Account" />
           <EntitySet Name="AccountInRoles" EntityType="AlenMotorsDbModel.AccountInRole" />
+          <EntitySet Name="Branches" EntityType="Self.Branch" />
           <EntitySet Name="Orders" EntityType="Self.Order" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Vehicles" EntityType="Self.Vehicle" />
@@ -272,6 +356,14 @@
           <AssociationSet Name="FK_Roles_RoleID" Association="Self.FK_Roles_RoleID">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="AccountsInRoles" EntitySet="AccountInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Branches" Association="Self.FK_Orders_Branches">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Branches" Association="Self.FK_Vehicles_Branches">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Vehicles" Association="Self.FK_Orders_Vehicles">
             <End Role="Vehicles" EntitySet="Vehicles" />
@@ -307,6 +399,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="AlenMotorsDbModel.Branch">
+              <MappingFragment StoreEntitySet="Branches">
+                <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="AlenMotorsDbModel.Order">
               <MappingFragment StoreEntitySet="Orders">
@@ -315,6 +415,8 @@
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="BranchID" ColumnName="BranchID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -330,12 +432,14 @@
             <EntityTypeMapping TypeName="AlenMotorsDbModel.Vehicle">
               <MappingFragment StoreEntitySet="Vehicles">
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
                 <ScalarProperty Name="VehicleManufacturer" ColumnName="VehicleManufacturer" />
                 <ScalarProperty Name="VehicleManufacturYear" ColumnName="VehicleManufacturYear" />
                 <ScalarProperty Name="VehicleModel" ColumnName="VehicleModel" />
                 <ScalarProperty Name="VehicleDistanceTraveled" ColumnName="VehicleDistanceTraveled" />
                 <ScalarProperty Name="VehicleTransmission" ColumnName="VehicleTransmission" />
                 <ScalarProperty Name="VehicleStatus" ColumnName="VehicleStatus" />
+                <ScalarProperty Name="BranchID" ColumnName="BranchID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

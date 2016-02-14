@@ -13,8 +13,11 @@ namespace AlenMotorsDAL {
         public string ErrorMessage{get; set;}
         public Account User{get; set;}
 
+        public List <Account> UserList{get; set;}
+
         public UserManagerResult() {
             Success = false;
+            UserList = new List <Account>();
         }
 
     }

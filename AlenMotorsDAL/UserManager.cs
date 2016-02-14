@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AlenMotorsDAL {
     public static class UserManager {
         /// <summary>
-        /// Register a new user
+        /// Add a new user
         /// </summary>
         /// <param name="email"></param>
         /// <param name="firstName"></param>
@@ -17,9 +17,9 @@ namespace AlenMotorsDAL {
         /// <param name="gender"></param>
         /// <param name="phoneNumber"></param>
         /// <param name="birthDate"></param>
-        /// <returns>Retuns true if the registration Succeeded, else returns string with an error message</returns>
-        public static UserManagerResult Register(string email, string firstName, string lastName, string password, string gender, int phoneNumber,
-                                                 string birthDate) {
+        /// <returns>Retuns true if the addition has Succeeded, else returns string with an error message</returns>
+        public static UserManagerResult AddUser(string email, string firstName, string lastName, string password, string gender, int phoneNumber,
+                                                string birthDate) {
             UserManagerResult userManagerResult = new UserManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
@@ -37,10 +37,44 @@ namespace AlenMotorsDAL {
                         PhoneNumber = phoneNumber,
                         RegistrationDate = DateTime.Now.ToString("{0:d/M/yyyy HH:mm:ss}")
                     });
-                    //AccountInRole accountInRole = new AccountInRole();
-                    //accountInRole.RoleID = 2;
-                    //alenMotorsDbEntities.SaveChanges();
-                    userManagerResult.Success = true;
+                    alenMotorsDbEntities.SaveChanges();
+                    UserRoleManagerResult addUserToRole = UserRoleManager.AddRoleToUser(email, "User");
+                    if (addUserToRole.Success) {
+                        userManagerResult.Success = true;
+                        return userManagerResult;
+                    }
+                    userManagerResult.ErrorMessage = "Some thing went wrong";
+                    return userManagerResult;
+                }
+            }
+            catch (Exception ex) {
+                userManagerResult.ErrorMessage = ex.Message;
+                return userManagerResult;
+            }
+        }
+
+        /// <summary>
+        /// Removes an existing user
+        /// </summary>
+        /// <param name="email">The serach parameter at which to remove the user</param>
+        /// <returns>Retuns true if the removal has Succeeded, else returns string with an error message</returns>
+        public static UserManagerResult RemoveUser(string email) {
+            UserManagerResult userManagerResult = new UserManagerResult();
+            try {
+                using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    foreach (
+                    Account account in alenMotorsDbEntities.Accounts.ToList().Where(account => account.Email.Replace(" ", String.Empty) == email)) {
+                        foreach (AccountInRole accountInRole in account.AccountsInRoles.ToList()) {
+                            account.AccountsInRoles.Remove(accountInRole);
+                        }
+                        foreach (Order order in account.Orders) {
+                            account.Orders.Remove(order);
+                        }
+                        alenMotorsDbEntities.Accounts.Remove(account);
+                        alenMotorsDbEntities.SaveChanges();
+                        userManagerResult.Success = true;
+                        return userManagerResult;
+                    }
                     return userManagerResult;
                 }
             }
@@ -60,12 +94,12 @@ namespace AlenMotorsDAL {
             UserManagerResult userManagerResult = new UserManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
-                    foreach (Account account in alenMotorsDbEntities.Accounts) {
-                        if (account.Email.Replace(" ", string.Empty) == email &&
-                            account.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(password, email)) {
-                            userManagerResult.Success = true;
-                            return userManagerResult;
-                        }
+                    if (Enumerable.Any(alenMotorsDbEntities.Accounts,
+                                       account =>
+                                       account.Email.Replace(" ", string.Empty) == email &&
+                                       account.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(password, email))) {
+                        userManagerResult.Success = true;
+                        return userManagerResult;
                     }
                     userManagerResult.ErrorMessage = "Email and Password don't match.";
                     return userManagerResult;
@@ -82,7 +116,7 @@ namespace AlenMotorsDAL {
         /// </summary>
         /// <param name="email">Email</param>
         /// <returns>Returns all the corresponds information (Account object), else a string with an error message</returns>
-        public static UserManagerResult GetUserInformation(string email) {
+        public static UserManagerResult GetUser(string email) {
             UserManagerResult userManagerResult = new UserManagerResult();
             Account user = new Account();
             try {
@@ -98,6 +132,7 @@ namespace AlenMotorsDAL {
                         user.PhoneNumber = account.PhoneNumber;
                         user.BirthDate = account.BirthDate;
                         userManagerResult.User = user;
+                        userManagerResult.Success = true;
                         return userManagerResult;
                     }
                 }
@@ -110,26 +145,82 @@ namespace AlenMotorsDAL {
         }
 
         /// <summary>
-        /// 
+        /// Update user
         /// </summary>
-        /// <param name="email"></param>
-        /// <param name="updateUser"></param>
-        /// <returns></returns>
-        public static UserManagerResult UpdateUser(string email, Account updateUser) {
+        /// <param name="email">Email</param>
+        /// <param name="userAccount">User account [Account]</param>
+        /// <param name="additionalinformation">New password</param>
+        /// <returns>Return true on successful update, else a string with an error message</returns>
+        public static UserManagerResult UpdateUser(string email, Account userAccount, string additionalinformation) {
             UserManagerResult userManagerResult = new UserManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    // Allternative 1
+                    if (email != userAccount.Email) {
+                        foreach (Account account0 in alenMotorsDbEntities.Accounts.ToList()) {
+                            if (account0.Email.Replace(" ", string.Empty) == email &&
+                                account0.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(additionalinformation, email)) {
+                                foreach (Account account1 in alenMotorsDbEntities.Accounts.ToList()) {
+                                    if (userAccount.Email == account1.Email.Replace(" ", String.Empty)) {
+                                        if (userAccount.RegistrationDate != null) {
+                                            account1.Email = userAccount.RegistrationDate;
+                                        }
+                                        account1.LastName = userAccount.LastName;
+                                        account1.FirstName = userAccount.FirstName;
+                                        account1.BirthDate = userAccount.BirthDate;
+                                        account1.Gender = userAccount.Gender;
+                                        account1.PhoneNumber = userAccount.PhoneNumber;
+                                        if (userAccount.Password != null) {
+                                            account1.Password = UserManagerGeneric.EncodePassword(userAccount.Password, userAccount.Email);
+                                        }
+                                        userManagerResult.Success = true;
+                                        alenMotorsDbEntities.SaveChanges();
+                                        return userManagerResult;
+                                    }
+                                }
+                            }
+                        }
+                        userManagerResult.Success = false;
+                        return userManagerResult;
+                    }
+
+                    // Allternative 2
+                    if (userAccount.Password != null) {
+                        foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
+                            if (account.Email.Replace(" ", string.Empty) == email &&
+                                account.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(userAccount.Password, email)) {
+                                account.LastName = userAccount.LastName;
+                                account.FirstName = userAccount.FirstName;
+                                account.BirthDate = userAccount.BirthDate;
+                                account.Gender = userAccount.Gender;
+                                account.PhoneNumber = userAccount.PhoneNumber;
+                                if (additionalinformation != null) {
+                                    account.Password = UserManagerGeneric.EncodePassword(additionalinformation, email);
+                                }
+                                if (email != account.Email.Replace(" ", String.Empty)) {
+                                    account.Email = email;
+                                }
+                                userManagerResult.Success = true;
+                                alenMotorsDbEntities.SaveChanges();
+                                return userManagerResult;
+                            }
+                        }
+                    }
+
+                    // Allternative 3
                     foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
                         if (account.Email.Replace(" ", string.Empty) == email &&
-                            account.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(updateUser.Password, email)) {
-                            account.LastName = updateUser.LastName;
-                            account.FirstName = updateUser.FirstName;
-                            account.BirthDate = updateUser.BirthDate;
-                            account.Gender = updateUser.Gender;
-                            account.PhoneNumber = updateUser.PhoneNumber;
-                            // We are using registration date to pass the new password
-                            if (updateUser.RegistrationDate != null) {
-                                account.Password = UserManagerGeneric.EncodePassword(updateUser.RegistrationDate, email);
+                            account.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(additionalinformation, email)) {
+                            account.LastName = userAccount.LastName;
+                            account.FirstName = userAccount.FirstName;
+                            account.BirthDate = userAccount.BirthDate;
+                            account.Gender = userAccount.Gender;
+                            account.PhoneNumber = userAccount.PhoneNumber;
+                            if (additionalinformation != null) {
+                                account.Password = UserManagerGeneric.EncodePassword(additionalinformation, email);
+                            }
+                            if (email != account.Email.Replace(" ", String.Empty)) {
+                                account.Email = email;
                             }
                             userManagerResult.Success = true;
                             alenMotorsDbEntities.SaveChanges();
@@ -144,8 +235,27 @@ namespace AlenMotorsDAL {
                 userManagerResult.ErrorMessage = ex.Message;
                 return userManagerResult;
             }
+        }
 
-            return null;
+        /// <summary>
+        /// Returns the list of all users
+        /// </summary>
+        /// <returns>Return true on successful action as well as List<Account> of all users, else a string with an error message</returns>
+        public static UserManagerResult GetUsers() {
+            UserManagerResult userManagerResult = new UserManagerResult();
+            try {
+                using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
+                        userManagerResult.Success = true;
+                        userManagerResult.UserList.Add(account);
+                    }
+                    return userManagerResult;
+                }
+            }
+            catch (Exception ex) {
+                userManagerResult.ErrorMessage = ex.Message;
+                return userManagerResult;
+            }
         }
     }
 }
