@@ -31,7 +31,7 @@ namespace AlenMotorsDAL {
                         Email = email,
                         FirstName = firstName,
                         LastName = lastName,
-                        Password = UserManagerGeneric.EncodePassword(password, email),
+                        Password = Generic.EncodePassword(password, email),
                         Gender = gender,
                         BirthDate = birthDate,
                         PhoneNumber = phoneNumber,
@@ -97,7 +97,7 @@ namespace AlenMotorsDAL {
                     if (Enumerable.Any(alenMotorsDbEntities.Accounts,
                                        account =>
                                        account.Email.Replace(" ", string.Empty) == email &&
-                                       account.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(password, email))) {
+                                       account.Password.Replace(" ", string.Empty) == Generic.EncodePassword(password, email))) {
                         userManagerResult.Success = true;
                         return userManagerResult;
                     }
@@ -151,7 +151,7 @@ namespace AlenMotorsDAL {
         /// <param name="userAccount">User account [Account]</param>
         /// <param name="additionalinformation">New password</param>
         /// <returns>Return true on successful update, else a string with an error message</returns>
-        public static UserManagerResult UpdateUser(string email, Account userAccount, string additionalinformation) {
+        public static UserManagerResult EditUser(string email, Account userAccount, string additionalinformation) {
             UserManagerResult userManagerResult = new UserManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
@@ -159,7 +159,7 @@ namespace AlenMotorsDAL {
                     if (email != userAccount.Email) {
                         foreach (Account account0 in alenMotorsDbEntities.Accounts.ToList()) {
                             if (account0.Email.Replace(" ", string.Empty) == email &&
-                                account0.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(additionalinformation, email)) {
+                                account0.Password.Replace(" ", string.Empty) == Generic.EncodePassword(additionalinformation, email)) {
                                 foreach (Account account1 in alenMotorsDbEntities.Accounts.ToList()) {
                                     if (userAccount.Email == account1.Email.Replace(" ", String.Empty)) {
                                         if (userAccount.RegistrationDate != null) {
@@ -171,7 +171,7 @@ namespace AlenMotorsDAL {
                                         account1.Gender = userAccount.Gender;
                                         account1.PhoneNumber = userAccount.PhoneNumber;
                                         if (userAccount.Password != null) {
-                                            account1.Password = UserManagerGeneric.EncodePassword(userAccount.Password, userAccount.Email);
+                                            account1.Password = Generic.EncodePassword(userAccount.Password, userAccount.Email);
                                         }
                                         userManagerResult.Success = true;
                                         alenMotorsDbEntities.SaveChanges();
@@ -188,14 +188,14 @@ namespace AlenMotorsDAL {
                     if (userAccount.Password != null) {
                         foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
                             if (account.Email.Replace(" ", string.Empty) == email &&
-                                account.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(userAccount.Password, email)) {
+                                account.Password.Replace(" ", string.Empty) == Generic.EncodePassword(userAccount.Password, email)) {
                                 account.LastName = userAccount.LastName;
                                 account.FirstName = userAccount.FirstName;
                                 account.BirthDate = userAccount.BirthDate;
                                 account.Gender = userAccount.Gender;
                                 account.PhoneNumber = userAccount.PhoneNumber;
                                 if (additionalinformation != null) {
-                                    account.Password = UserManagerGeneric.EncodePassword(additionalinformation, email);
+                                    account.Password = Generic.EncodePassword(additionalinformation, email);
                                 }
                                 if (email != account.Email.Replace(" ", String.Empty)) {
                                     account.Email = email;
@@ -210,14 +210,14 @@ namespace AlenMotorsDAL {
                     // Allternative 3
                     foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
                         if (account.Email.Replace(" ", string.Empty) == email &&
-                            account.Password.Replace(" ", string.Empty) == UserManagerGeneric.EncodePassword(additionalinformation, email)) {
+                            account.Password.Replace(" ", string.Empty) == Generic.EncodePassword(additionalinformation, email)) {
                             account.LastName = userAccount.LastName;
                             account.FirstName = userAccount.FirstName;
                             account.BirthDate = userAccount.BirthDate;
                             account.Gender = userAccount.Gender;
                             account.PhoneNumber = userAccount.PhoneNumber;
                             if (additionalinformation != null) {
-                                account.Password = UserManagerGeneric.EncodePassword(additionalinformation, email);
+                                account.Password = Generic.EncodePassword(additionalinformation, email);
                             }
                             if (email != account.Email.Replace(" ", String.Empty)) {
                                 account.Email = email;

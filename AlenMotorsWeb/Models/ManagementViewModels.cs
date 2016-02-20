@@ -39,17 +39,33 @@ namespace alenMotorsWeb.Models {
 
         public List <SelectListItem> RoleList{get; set;}
 
-        [Display(Name = "User list")]
-        public string SelectedRole{get; set;}
+        public List<SelectListItem> RoleListUser { get; set; }
+
+        [Display(Name = "Roles to Add")]
+        public string RoleToAdd{get; set;}
+
+        [Display(Name = "Roles to Remove")]
+        public string RoleToRemove { get; set; }
     }
 
     public class ManagementViewModel {
         [Display(Name = "New Role")]
         public string NewRole{get; set;}
+
+        [Display(Name = "New Branch")]
+        public string NewBranch{get; set;}
+
         [Display(Name = "Remove Role")]
         public string RoleToRemove{get; set;}
 
+        [Display(Name = "Remove Branch")]
+        public string BranchToRemove{get; set;}
+
+
         public List <SelectListItem> RoleList{get; set;}
+
+        public List <SelectListItem> BracnhList{get; set;}
+
 
         [Display(Name = "User list")]
         public List <Account> UserList{get; set;}

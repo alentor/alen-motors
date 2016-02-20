@@ -4,17 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f1984fe86b034c698b6850fd44637d62" Name="Diagram1">
-        <EntityTypeShape EntityType="AlenMotorsDbModel.Account" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="AlenMotorsDbModel.AccountInRole" Width="1.5" PointX="3.375" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AlenMotorsDbModel.Branch" Width="1.5" PointX="8.25" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AlenMotorsDbModel.Order" Width="1.5" PointX="7.25" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="AlenMotorsDbModel.Role" Width="1.5" PointX="1.5" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AlenMotorsDbModel.Vehicle" Width="1.5" PointX="9.375" PointY="2.75" IsExpanded="true" />
+      <Diagram DiagramId="cd89ba4715ba4b7db002da2c9f8cb18a" Name="Diagram1">
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Account" Width="1.5" PointX="7.875" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.AccountInRole" Width="1.5" PointX="10" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Branch" Width="1.5" PointX="1.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Order" Width="1.5" PointX="5.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Role" Width="1.5" PointX="12.125" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AlenMotorsDbModel.Vehicle" Width="1.5" PointX="3.75" PointY="4.125" IsExpanded="true" />
         <AssociationConnector Association="AlenMotorsDbModel.FK_Accounts_AccountID" ManuallyRouted="false" />
         <AssociationConnector Association="AlenMotorsDbModel.FK_Orders_Accounts" ManuallyRouted="false" />
         <AssociationConnector Association="AlenMotorsDbModel.FK_Roles_RoleID" ManuallyRouted="false" />
-        <AssociationConnector Association="AlenMotorsDbModel.FK_Orders_Branches" ManuallyRouted="false" />
         <AssociationConnector Association="AlenMotorsDbModel.FK_Vehicles_Branches" ManuallyRouted="false" />
         <AssociationConnector Association="AlenMotorsDbModel.FK_Orders_Vehicles" ManuallyRouted="false" />
       </Diagram>

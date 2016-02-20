@@ -11,12 +11,15 @@ using System.Web.Security;
 
 namespace alenMotorsWeb.Controllers {
     public class ManagementController: Controller {
-        // GET => Management/Developer
+        // GET => Management
         [Authorize(Roles = "Employee")]
-        public ActionResult Manage(ManagementViewModel model, int? page) {
+        public ActionResult Index(ManagementViewModel model, int? page) {
             // Error Filtering
             if (TempData["RoleAdded"] != null) {
                 ModelState.AddModelError(string.Empty, TempData["RoleAdded"].ToString());
+            }
+            if (TempData["BranchAdded"] != null) {
+                ModelState.AddModelError(string.Empty, TempData["BranchAdded"].ToString());
             }
             if (TempData["RoleRemoved"] != null) {
                 ModelState.AddModelError(string.Empty, TempData["RoleRemoved"].ToString());
@@ -34,12 +37,22 @@ namespace alenMotorsWeb.Controllers {
                 ModelState.AddModelError(string.Empty, TempData["EditRole"].ToString());
             }
             // Roels for DropDown
-            UserRoleManagerResult getRoleListResult = UserRoleManager.GetRoles();
-            if (getRoleListResult.Success) {
-                model.RoleList = getRoleListResult.Roles.Select(x => new SelectListItem {Text = x, Value = x}).ToList();
+            UserRoleManagerResult getRolesResult = UserRoleManager.GetRoles();
+            if (getRolesResult.Success) {
+                model.RoleList = getRolesResult.Roles.Select(x => new SelectListItem {Text = x, Value = x}).ToList();
             }
             else {
-                TempData["ManagementError"] = getRoleListResult.ErrorMessage;
+                TempData["ManagementError"] = getRolesResult.ErrorMessage;
+                ModelState.AddModelError(string.Empty, TempData["ManagementError"].ToString());
+            }
+
+            // branches for DropDown
+            BranchManagerResult getBranchesResult = BranchManager.GetBranchesNames();
+            if (getBranchesResult.Success) {
+                model.BracnhList = getBranchesResult.BranchesNames.Select(x => new SelectListItem {Text = x, Value = x}).ToList();
+            }
+            else {
+                TempData["ManagementError"] = getBranchesResult.ErrorMessage;
                 ModelState.AddModelError(string.Empty, TempData["ManagementError"].ToString());
             }
 
@@ -68,19 +81,18 @@ namespace alenMotorsWeb.Controllers {
             }
             else {
                 TempData["ManagementError"] = getUserListResult.ErrorMessage;
-                ModelState.AddModelError(string.Empty, TempData["ManagementError"].ToString());
             }
 
             return View(model);
         }
 
-        // Post => Management/AddNewRole
+        // Post => Management
         [HttpPost]
         [Authorize(Roles = "Developer")]
         public ActionResult AddNewRole(ManagementViewModel model) {
             if (!ModelState.IsValid) {
                 ModelState.AddModelError("", "Model validation Error");
-                return RedirectToAction("Manage", "Management");
+                return RedirectToAction("Index", "Management");
             }
             UserRoleManagerResult addNewRole = UserRoleManager.AddRole(model.NewRole);
             if (addNewRole.Success) {
@@ -88,10 +100,11 @@ namespace alenMotorsWeb.Controllers {
             }
             else {
                 TempData["RoleAdded"] = addNewRole.ErrorMessage;
-                return RedirectToAction("Manage", "Management");
+                return RedirectToAction("Index", "Management");
             }
-            return RedirectToAction("Manage", "Management");
+            return RedirectToAction("Index", "Management");
         }
+
 
         // Post => Management/RemoveRole
         [HttpPost]
@@ -99,7 +112,7 @@ namespace alenMotorsWeb.Controllers {
         public ActionResult RemvoeRole(ManagementViewModel model) {
             if (!ModelState.IsValid) {
                 ModelState.AddModelError("", "Model validation Error");
-                return RedirectToAction("Manage", "Management");
+                return RedirectToAction("Index", "Management");
             }
             UserRoleManagerResult removeRole = UserRoleManager.RemoveRole(model.RoleToRemove);
             if (removeRole.Success) {
@@ -107,10 +120,49 @@ namespace alenMotorsWeb.Controllers {
             }
             else {
                 TempData["RoleRemoved"] = removeRole.ErrorMessage;
-                return RedirectToAction("Manage", "Management");
+                return RedirectToAction("Index", "Management");
             }
-            return RedirectToAction("Manage", "Management");
+            return RedirectToAction("Index", "Management");
         }
+
+        // Post => Management/AddBranch
+        [HttpPost]
+        [Authorize(Roles = "Developer")]
+        public ActionResult AdddNewBranch(ManagementViewModel model) {
+            if (!ModelState.IsValid) {
+                ModelState.AddModelError("", "Model validation Error");
+                return RedirectToAction("Index", "Management");
+            }
+            BranchManagerResult addNewBranch = BranchManager.AddBranch(model.NewBranch);
+            if (addNewBranch.Success) {
+                TempData["BranchAdded"] = "Branch Added";
+            }
+            else {
+                TempData["RoleAdded"] = addNewBranch.ErrorMessage;
+                return RedirectToAction("Index", "Management");
+            }
+            return RedirectToAction("Index", "Management");
+        }
+
+        // Post => Management/RemoveBranch
+        [HttpPost]
+        [Authorize(Roles = "Developer")]
+        public ActionResult RemoveBranch(ManagementViewModel model) {
+            if (!ModelState.IsValid) {
+                ModelState.AddModelError("", "Model validation Error");
+                return RedirectToAction("Index", "Management");
+            }
+            BranchManagerResult removeBranch = BranchManager.RemoveBranch(model.BranchToRemove);
+            if (removeBranch.Success) {
+                TempData["BranchAdded"] = "Branch Removed";
+            }
+            else {
+                TempData["RoleAdded"] = removeBranch.ErrorMessage;
+                return RedirectToAction("Index", "Management");
+            }
+            return RedirectToAction("Index", "Management");
+        }
+
 
         // Get => Management/RemoveUser
         [Authorize(Roles = "Developer")]
@@ -118,10 +170,10 @@ namespace alenMotorsWeb.Controllers {
             UserManagerResult removeUserResult = UserManager.RemoveUser(email);
             if (removeUserResult.Success) {
                 TempData["UserRemoved"] = "User removed successfully";
-                return RedirectToAction("Manage", "Management");
+                return RedirectToAction("Index", "Management");
             }
             TempData["UserRemoved"] = removeUserResult.ErrorMessage;
-            return RedirectToAction("Manage", "Management");
+            return RedirectToAction("Index", "Management");
         }
 
         // Get => Management/EditUser
@@ -147,6 +199,37 @@ namespace alenMotorsWeb.Controllers {
             //return View(model);
         }
 
+        // Get => Management/EditUser
+        [Authorize(Roles = "Developer")]
+        public ActionResult EditRoles(string email) {
+            if (email == null) {
+                return RedirectToAction("Index", "Management");
+            }
+            if (TempData["AddRoleToUser"] != null) {
+                ModelState.AddModelError(string.Empty, TempData["AddRoleToUser"].ToString());
+            }
+            if (TempData["RemoveRoleUser"] != null) {
+                ModelState.AddModelError(string.Empty, TempData["RemoveRoleUser"].ToString());
+            }
+            UserRoleManagerResult getUserRolesResult = UserRoleManager.GetUserRoles(email);
+            if (!getUserRolesResult.Success) {
+                TempData["EditRole"] = getUserRolesResult.ErrorMessage;
+                return RedirectToAction("Index", "Management");
+            }
+            string roles = getUserRolesResult.Roles.Aggregate <string, string>(null, (current, role) => current + role + "             ");
+            UserRoleManagerResult getRoleListResult = UserRoleManager.GetRoles();
+            if (!getRoleListResult.Success) {
+                TempData["EditRole"] = getUserRolesResult.ErrorMessage;
+                return RedirectToAction("Index", "Management");
+            }
+            ManagementEditRolesViewModel model = new ManagementEditRolesViewModel {
+                Email = email,
+                Roles = roles,
+                RoleList = getRoleListResult.Roles.Select(x => new SelectListItem {Text = x, Value = x}).ToList(),
+                RoleListUser = getUserRolesResult.Roles.Select(x => new SelectListItem {Text = x, Value = x}).ToList(),
+            };
+            return View(model);
+        }
 
         // Post => Management/EditUser
         [Authorize(Roles = "Developer")]
@@ -169,7 +252,7 @@ namespace alenMotorsWeb.Controllers {
                     PhoneNumber = model.PhoneNumber,
                     Password = model.Password,
                 };
-                UserManagerResult updateUserResult = UserManager.UpdateUser(User.Identity.Name, userAccount, model.ManagementPassword);
+                UserManagerResult updateUserResult = UserManager.EditUser(User.Identity.Name, userAccount, model.ManagementPassword);
                 if (updateUserResult.ErrorMessage != null) {
                     ModelState.AddModelError("", updateUserResult.ErrorMessage);
                     model.Password = "";
@@ -182,7 +265,7 @@ namespace alenMotorsWeb.Controllers {
                         return RedirectToAction("LogOut", "Account");
                     }
                     TempData["UserUpdated"] = "User updated successfully";
-                    return RedirectToAction("Manage", "Management");
+                    return RedirectToAction("Index", "Management");
                 }
                 ModelState.AddModelError("", "Wrong Management password");
                 return View(model);
@@ -190,73 +273,41 @@ namespace alenMotorsWeb.Controllers {
             return RedirectToAction("index", "Home");
         }
 
-        // Get => Management/EditUser
-        [Authorize(Roles = "Developer")]
-        public ActionResult EditRoles(string email) {
-            if (email == null) {
-                return RedirectToAction("Manage", "Management");
-            }
-            if (Roles.IsUserInRole(User.Identity.Name, "Developer")) {
-                UserRoleManagerResult getUserRoles = UserRoleManager.GetUserRoles(email);
-                //if (getUserRoles.Success) {
-                string roles = getUserRoles.Roles.Aggregate <string, string>(null, (current, role) => current + role + "             ");
-                ManagementEditRolesViewModel model = new ManagementEditRolesViewModel {Email = email, Roles = roles,};
-                UserRoleManagerResult getRoleListResult = UserRoleManager.GetRoles();
-
-                if (getRoleListResult.Success) {
-                    model.RoleList = getRoleListResult.Roles.Select(x => new SelectListItem {Text = x, Value = x}).ToList();
-                }
-                else {
-                    TempData["ManagementError"] = getRoleListResult.ErrorMessage;
-                    ModelState.AddModelError(string.Empty, TempData["ManagementError"].ToString());
-                }
-
-                return View(model);
-                //}
-                //TempData["EditRole"] = "Something went wrong";
-                //return RedirectToAction("Manage", "Management");
-            }
-            return RedirectToAction("Index", "Home");
-        }
-
 
         [Authorize(Roles = "Developer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditRoles(ManagementEditRolesViewModel model) {
+        public ActionResult AddRoleToUser(ManagementEditRolesViewModel model) {
             if (!ModelState.IsValid) {
-                ModelState.AddModelError("", "Model validation Error");
-                return View(model);
+                TempData["AddRoleToUser"] = "Model validation Error";
+                return RedirectToAction("Index", "Management");
             }
 
-            UserRoleManagerResult getRoleListResult = UserRoleManager.GetRoles();
-            if (getRoleListResult.Success) {
-                model.RoleList = getRoleListResult.Roles.Select(x => new SelectListItem {Text = x, Value = x}).ToList();
-            }
-            else {
-                TempData["ManagementError"] = getRoleListResult.ErrorMessage;
-                ModelState.AddModelError(string.Empty, TempData["ManagementError"].ToString());
-                return RedirectToAction("Manage", "Management");
-            }
-
-            UserRoleManagerResult getUserRoles = UserRoleManager.GetUserRoles(model.Email);
-            if (getUserRoles.Success) {
-                string roles = getUserRoles.Roles.Aggregate <string, string>(null, (current, role) => current + role + " ");
-                model.Roles = roles;
-            }
-            else {
-                TempData["ManagementError"] = getUserRoles.ErrorMessage;
-                ModelState.AddModelError(string.Empty, TempData["ManagementError"].ToString());
-                return RedirectToAction("Manage", "Management");
-            }
-
-            UserRoleManagerResult addRoleToUserResult = UserRoleManager.AddRoleToUser(model.Email, model.SelectedRole);
+            UserRoleManagerResult addRoleToUserResult = UserRoleManager.AddRoleToUser(model.Email, model.RoleToAdd);
             if (addRoleToUserResult.Success) {
-                ModelState.AddModelError("", "Role Added successfully");
-                return View(model);
+                TempData["AddRoleToUser"] = "Role Added successfully";
+                return RedirectToAction("EditRoles", "Management", new {email = model.Email});
             }
-            ModelState.AddModelError("", addRoleToUserResult.ErrorMessage);
-            return View(model);
+            TempData["AddRoleToUser"] = addRoleToUserResult.ErrorMessage;
+            return RedirectToAction("EditRoles", "Management", new {email = model.Email});
+        }
+
+        [Authorize(Roles = "Developer")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveRoleFromUser(ManagementEditRolesViewModel model) {
+            if (!ModelState.IsValid) {
+                TempData["AddRoleToUser"] = "Model validation Error";
+                return RedirectToAction("Index", "Management");
+            }
+
+            UserRoleManagerResult removeRoleFromUserResult = UserRoleManager.RemoveRoleFromUser(model.Email, model.RoleToRemove);
+            if (removeRoleFromUserResult.Success) {
+                TempData["AddRoleToUser"] = "Role Removed successfully";
+                return RedirectToAction("EditRoles", "Management", new {email = model.Email});
+            }
+            TempData["AddRoleToUser"] = removeRoleFromUserResult.ErrorMessage;
+            return RedirectToAction("EditRoles", "Management", new {email = model.Email});
         }
     }
 }

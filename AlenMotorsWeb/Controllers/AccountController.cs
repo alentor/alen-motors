@@ -55,7 +55,10 @@ namespace alenMotorsWeb.Controllers {
             }
             UserManagerResult loginResult = UserManager.Login(model.Email, model.Password);
             if (loginResult.Success) {
-                FormsAuthentication.SetAuthCookie(model.Email, false);
+                FormsAuthentication.SetAuthCookie(model.Email, model.RememberMe);
+                if (returnUrl != null) {
+                    return Redirect(returnUrl);
+                }
                 return RedirectToAction("Account", "Account");
             }
             ModelState.AddModelError("", loginResult.ErrorMessage);
@@ -106,7 +109,7 @@ namespace alenMotorsWeb.Controllers {
 
         // Post => /Account/Account
         [HttpPost]
-        [Authorize(Roles = "Developer")]
+        [Authorize(Roles = "Developer, User, Employee, Manager")]
         [ValidateAntiForgeryToken]
         public ActionResult Account(AccountViewModel model) {
             if (!ModelState.IsValid) {
@@ -122,7 +125,7 @@ namespace alenMotorsWeb.Controllers {
                 PhoneNumber = model.PhoneNumber,
                 Password = model.Password,
             };
-            UserManagerResult updateUserResult = UserManager.UpdateUser(User.Identity.Name, userAccount, model.NewPassword);
+            UserManagerResult updateUserResult = UserManager.EditUser(User.Identity.Name, userAccount, model.NewPassword);
             if (updateUserResult.ErrorMessage != null) {
                 ModelState.AddModelError("", updateUserResult.ErrorMessage);
                 model.Password = "";

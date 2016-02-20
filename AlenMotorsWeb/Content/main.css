@@ -10,11 +10,6 @@ body { margin-bottom: 60px; }
 
 .input-sm { color: #222222; }
 
-.glyphicon {
-    /*color: green;*/
-    /*background-color: #000000;*/
-}
-
 .input-group-addon { background-color: #000000; }
 
 .navbar {
@@ -180,7 +175,7 @@ footer { padding-top: 9px; }
     /*border: 10px solid black;*/
 }
 
-.bootstrap-datetimepicker-widget table thead tr:first-child th:hover { background: #eeeeee; }
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover { background: #040404; }
 
 .dateTimePickerMain table thead tr:first-child th:hover { background: red; }
 
@@ -234,8 +229,72 @@ footer { padding-top: 9px; }
     .carousel-indicators { display: none; }
 }
 
-/*.mystyle input[type="text"] {
-    height: 14px;
-    font-size: 10px;
-    line-height: 14px;
+
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td { vertical-align: middle; }
+
+/*table.table td img{
+    width: 100%;
+    height: 40%;
 }*/
+
+.imgToUpload {
+    height: 100%;
+    width: 220px;
+}
+
+table.table td img {
+    width: 100%;
+    height: 90px;
+    /*display: block;*/
+}
+
+.oderSearchBtn { margin-top: 40px; }
+
+.orderImage {
+    width: 100%;
+    height: 190px;
+}
+
+.glyphicon { margin-right: 5px; }
+
+.thumbnail {
+    margin-bottom: 20px;
+    padding: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.item.list-group-item {
+    float: none;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.item.list-group-item:nth-of-type(odd):hover, .item.list-group-item:hover { background: #428bca; }
+
+.item.list-group-item .list-group-image { margin-right: 10px; }
+
+.item.list-group-item .thumbnail { margin-bottom: 0px; }
+
+.item.list-group-item .caption { padding: 9px 9px 0px 9px; }
+
+.item.list-group-item:nth-of-type(odd) { background: #eeeeee; }
+
+.item.list-group-item:before, .item.list-group-item:after {
+    display: table;
+    content: " ";
+}
+
+.item.list-group-item img { float: left; }
+
+.item.list-group-item:after { clear: both; }
+
+.list-group-item-text { margin: 0 0 11px; }

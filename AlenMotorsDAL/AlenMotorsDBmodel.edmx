@@ -44,7 +44,6 @@
           <Property Name="EndDate" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="VehicleID" Type="int" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
-          <Property Name="BranchID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -59,13 +58,16 @@
           </Key>
           <Property Name="VehicleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LicensePlate" Type="int" Nullable="false" />
-          <Property Name="VehicleManufacturer" Type="nchar" MaxLength="20" Nullable="false" />
-          <Property Name="VehicleManufacturYear" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="VehicleModel" Type="nchar" MaxLength="20" Nullable="false" />
-          <Property Name="VehicleDistanceTraveled" Type="int" Nullable="false" />
-          <Property Name="VehicleTransmission" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="VehicleStatus" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Manufacturer" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="ManufacturYear" Type="int" Nullable="false" />
+          <Property Name="Model" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="DistanceTraveled" Type="int" Nullable="false" />
+          <Property Name="Transmission" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Status" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Color" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="ImageUrl" Type="nchar" MaxLength="200" Nullable="false" />
           <Property Name="BranchID" Type="int" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Accounts_AccountID">
           <End Role="Accounts" Type="Self.Accounts" Multiplicity="1" />
@@ -100,18 +102,6 @@
             </Principal>
             <Dependent Role="Orders">
               <PropertyRef Name="AccountID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Orders_Branches">
-          <End Role="Branches" Type="Self.Branches" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branches">
-              <PropertyRef Name="BranchID" />
-            </Principal>
-            <Dependent Role="Orders">
-              <PropertyRef Name="BranchID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -170,10 +160,6 @@
             <End Role="Accounts" EntitySet="Accounts" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK_Orders_Branches" Association="Self.FK_Orders_Branches">
-            <End Role="Branches" EntitySet="Branches" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
           <AssociationSet Name="FK_Orders_Vehicles" Association="Self.FK_Orders_Vehicles">
             <End Role="Vehicles" EntitySet="Vehicles" />
             <End Role="Orders" EntitySet="Orders" />
@@ -224,7 +210,6 @@
           </Key>
           <Property Name="BranchID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BranchName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Branches" FromRole="Branches" ToRole="Orders" />
           <NavigationProperty Name="Vehicles" Relationship="Self.FK_Vehicles_Branches" FromRole="Branches" ToRole="Vehicles" />
         </EntityType>
         <EntityType Name="Order">
@@ -237,9 +222,7 @@
           <Property Name="EndDate" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="VehicleID" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
-          <Property Name="BranchID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="Self.FK_Orders_Accounts" FromRole="Orders" ToRole="Accounts" />
-          <NavigationProperty Name="Branch" Relationship="Self.FK_Orders_Branches" FromRole="Orders" ToRole="Branches" />
           <NavigationProperty Name="Vehicle" Relationship="Self.FK_Orders_Vehicles" FromRole="Orders" ToRole="Vehicles" />
         </EntityType>
         <EntityType Name="Role">
@@ -256,13 +239,16 @@
           </Key>
           <Property Name="VehicleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LicensePlate" Type="Int32" Nullable="false" />
-          <Property Name="VehicleManufacturer" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="VehicleManufacturYear" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="VehicleModel" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="VehicleDistanceTraveled" Type="Int32" Nullable="false" />
-          <Property Name="VehicleTransmission" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="VehicleStatus" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Manufacturer" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ManufacturYear" Type="Int32" Nullable="false" />
+          <Property Name="Model" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DistanceTraveled" Type="Int32" Nullable="false" />
+          <Property Name="Transmission" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Color" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="200" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="BranchID" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Branch" Relationship="Self.FK_Vehicles_Branches" FromRole="Vehicles" ToRole="Branches" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Vehicles" FromRole="Vehicles" ToRole="Orders" />
         </EntityType>
@@ -299,18 +285,6 @@
             </Principal>
             <Dependent Role="AccountsInRoles">
               <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Orders_Branches">
-          <End Role="Branches" Type="Self.Branch" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Branches">
-              <PropertyRef Name="BranchID" />
-            </Principal>
-            <Dependent Role="Orders">
-              <PropertyRef Name="BranchID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -356,10 +330,6 @@
           <AssociationSet Name="FK_Roles_RoleID" Association="Self.FK_Roles_RoleID">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="AccountsInRoles" EntitySet="AccountInRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_Branches" Association="Self.FK_Orders_Branches">
-            <End Role="Branches" EntitySet="Branches" />
-            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Vehicles_Branches" Association="Self.FK_Vehicles_Branches">
             <End Role="Branches" EntitySet="Branches" />
@@ -416,7 +386,6 @@
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="BranchID" ColumnName="BranchID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -433,13 +402,16 @@
               <MappingFragment StoreEntitySet="Vehicles">
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
                 <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
-                <ScalarProperty Name="VehicleManufacturer" ColumnName="VehicleManufacturer" />
-                <ScalarProperty Name="VehicleManufacturYear" ColumnName="VehicleManufacturYear" />
-                <ScalarProperty Name="VehicleModel" ColumnName="VehicleModel" />
-                <ScalarProperty Name="VehicleDistanceTraveled" ColumnName="VehicleDistanceTraveled" />
-                <ScalarProperty Name="VehicleTransmission" ColumnName="VehicleTransmission" />
-                <ScalarProperty Name="VehicleStatus" ColumnName="VehicleStatus" />
+                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+                <ScalarProperty Name="ManufacturYear" ColumnName="ManufacturYear" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="DistanceTraveled" ColumnName="DistanceTraveled" />
+                <ScalarProperty Name="Transmission" ColumnName="Transmission" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

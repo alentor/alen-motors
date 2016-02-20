@@ -12,7 +12,7 @@
                 minDate: moment(),
                 widgetPositioning: {
                     horizontal: 'left',
-                    vertical:'bottom'
+                    vertical: 'bottom'
                 }
             });
             $('#datetimepicker7').datetimepicker({
@@ -20,8 +20,8 @@
                 format: 'DD/MM/YYYY',
                 minDate: moment(),
                 widgetPositioning: {
-                vertical:'bottom'
-            }
+                    vertical: 'bottom'
+                }
             });
             $("#datetimepicker6").on("dp.change", function(e) {
                 $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
@@ -30,33 +30,8 @@
                 $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
             });
 
-            //// The following code is to change the hover color of the text
-
-            //$("#datetimepicker6").addClass(".test");
-
-            // $('#datetimepicker6').on(
-            //'dp.show',
-            //function (e) {
-            //    $(".bootstrap-datetimepicker-widget").css(
-            //    "background", "red");
-            //});
-
-
-            //var ismobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
-            //if (!ismobile) {
-            //    $("#datetimepicker7 input").addClass('no-grey').prop('readonly', true);
-            //}
-            //$("#datetimepicker7").datepicker({
-            //    autoclose: true,
-            //    todayHighlight: true
-            //}).datepicker('update', new Date());;
         });
-        //$(document).ready(function () {
-        //    $('.input-daterange').datepicker({
-        //        todayBtn: "linked"
-        //    });
 
-        //});
     </script>
 }
 <div class="overlay">
@@ -68,7 +43,7 @@
         </div>*@
         @*<input type="text" class="datepicker" style="color: red;"/><br/>*@
         <div class="col-md-6 col-sm-6 col-xs-6">
-            <div class="form-group">@*  *@
+            <div class="form-group">
                 <h5>Pickup</h5>
                 <div class="input-group date" id="datetimepicker6">
                     <input type="text" class="form-control text-center"/>

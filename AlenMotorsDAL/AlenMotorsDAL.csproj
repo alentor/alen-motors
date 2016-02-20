@@ -41,8 +41,13 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,21 +80,27 @@
     <Compile Include="Branch.cs">
       <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="BranchManager.cs" />
+    <Compile Include="BranchManagerResult.cs" />
     <Compile Include="Order.cs">
       <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="OrderManager.cs" />
+    <Compile Include="OrderManagerResult.cs" />
     <Compile Include="Role.cs">
       <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserManager.cs" />
-    <Compile Include="UserManagerGeneric.cs" />
-    <Compile Include="UserManagerResult.cs" />
-    <Compile Include="UserRoleManager.cs" />
-    <Compile Include="UserRoleManagerResult.cs" />
     <Compile Include="Vehicle.cs">
       <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="VehicleManager.cs" />
+    <Compile Include="VehicleManagerResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserManager.cs" />
+    <Compile Include="Generic.cs" />
+    <Compile Include="UserManagerResult.cs" />
+    <Compile Include="UserRoleManager.cs" />
+    <Compile Include="UserRoleManagerResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="AlenMotorsDBmodel.edmx">

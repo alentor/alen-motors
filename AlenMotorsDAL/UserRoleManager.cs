@@ -105,19 +105,26 @@ namespace AlenMotorsDAL {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
                     foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
                         if (account.Email.Replace(" ", string.Empty) == email) {
-                            int roleToRemove = 0;
-                            foreach (Role role in alenMotorsDbEntities.Roles.ToList().Where(role => role.RoleName == roleName)) {
-                                roleToRemove = role.RoleID;
+                            foreach (Role role in alenMotorsDbEntities.Roles.ToList()) {
+                                if (role.RoleName.Replace(" ", String.Empty) == roleName) {
+                                    int roleIDtoRemove = role.RoleID;
+                                    if (roleIDtoRemove == 4) {
+                                        userManagerResult.ErrorMessage = "You can't remove the Role User";
+                                        return userManagerResult;
+                                    }
+                                    AccountInRole accountInRoleToRemove = new AccountInRole { AccountID = account.AccountID, RoleID = roleIDtoRemove };
+                                    alenMotorsDbEntities.AccountInRoles.Attach(accountInRoleToRemove);
+                                    alenMotorsDbEntities.AccountInRoles.Remove(accountInRoleToRemove);
+                                    alenMotorsDbEntities.SaveChanges();
+                                    userManagerResult.Success = true;
+                                    return userManagerResult;
+                                }
                             }
-                            AccountInRole x = account.AccountsInRoles.FirstOrDefault(accountsInRole => accountsInRole.RoleID == roleToRemove);
-                            account.AccountsInRoles.Remove(x);
-                            alenMotorsDbEntities.SaveChanges();
-                            userManagerResult.Success = true;
-                            return userManagerResult;
                         }
                     }
                 }
-                return null;
+                userManagerResult.ErrorMessage = "Mis match";
+                return userManagerResult;
             }
             catch (Exception ex) {
                 userManagerResult.ErrorMessage = ex.Message;

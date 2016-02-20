@@ -20,10 +20,8 @@ namespace AlenMotorsDAL
         public string EndDate { get; set; }
         public int VehicleID { get; set; }
         public bool Status { get; set; }
-        public int BranchID { get; set; }
     
         public virtual Account Account { get; set; }
-        public virtual Branch Branch { get; set; }
         public virtual Vehicle Vehicle { get; set; }
     }
 }

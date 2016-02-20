@@ -41,7 +41,6 @@
           <ScalarProperty Name="EndDate" ColumnName="EndDate" />
           <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
           <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="BranchID" ColumnName="BranchID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -58,13 +57,16 @@
         <MappingFragment StoreEntitySet="Vehicles">
           <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
           <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
-          <ScalarProperty Name="VehicleManufacturer" ColumnName="VehicleManufacturer" />
-          <ScalarProperty Name="VehicleManufacturYear" ColumnName="VehicleManufacturYear" />
-          <ScalarProperty Name="VehicleModel" ColumnName="VehicleModel" />
-          <ScalarProperty Name="VehicleDistanceTraveled" ColumnName="VehicleDistanceTraveled" />
-          <ScalarProperty Name="VehicleTransmission" ColumnName="VehicleTransmission" />
-          <ScalarProperty Name="VehicleStatus" ColumnName="VehicleStatus" />
+          <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+          <ScalarProperty Name="ManufacturYear" ColumnName="ManufacturYear" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="DistanceTraveled" ColumnName="DistanceTraveled" />
+          <ScalarProperty Name="Transmission" ColumnName="Transmission" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
           <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

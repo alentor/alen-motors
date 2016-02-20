@@ -22,13 +22,16 @@ namespace AlenMotorsDAL
     
         public int VehicleID { get; set; }
         public int LicensePlate { get; set; }
-        public string VehicleManufacturer { get; set; }
-        public string VehicleManufacturYear { get; set; }
-        public string VehicleModel { get; set; }
-        public int VehicleDistanceTraveled { get; set; }
-        public string VehicleTransmission { get; set; }
-        public string VehicleStatus { get; set; }
+        public string Manufacturer { get; set; }
+        public int ManufacturYear { get; set; }
+        public string Model { get; set; }
+        public int DistanceTraveled { get; set; }
+        public string Transmission { get; set; }
+        public string Status { get; set; }
+        public string Color { get; set; }
+        public string ImageUrl { get; set; }
         public int BranchID { get; set; }
+        public int Price { get; set; }
     
         public virtual Branch Branch { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

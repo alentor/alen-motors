@@ -1,0 +1,171 @@
+﻿@using System.Web.UI.WebControls
+@model alenMotorsWeb.Models.GarageEditVehicleViewModel
+
+@{
+    ViewBag.Title = "Alen Motors - EditVehicle";
+}
+
+@section script{
+    <script type="text/javascript">
+        function showImagePreview(input) {
+            if (input.files && input.files[0]) {
+                var filerdr = new FileReader();
+                filerdr.onload = function(e) {
+                    $('#vehicle_img').attr('src', e.target.result);
+                }
+                filerdr.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(function() {
+            $('#DatePicker').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                format: 'YYYY',
+                widgetPositioning: {
+                    horizontal: 'left',
+                    vertical: 'bottom',
+                }
+            });
+        });
+    </script>
+}
+
+<div class="row mainRow text-center">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("EditVehicle", "Garage", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {encType = "multipart/form-data", @class = "form-horizontal", role = "form"})) {
+            @Html.AntiForgeryToken()
+            <h1>Edit a Vehicle</h1>
+            <hr/>
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.EditorFor(model => model.VehicleId, new {htmlAttributes = new {@class = "hidden"}})
+            <div class="form-group">
+                <div>
+                    <img src="@Url.Content("~/Content/GarageImages/")@Model.ImageFileUrl" id="vehicle_img" class="img-rounded imgToUpload"/>
+                </div>
+                <br/>
+                <div class="col-md-offset-3 col-md-10">
+                    @Html.TextBoxFor(m => m.ImageFile, new {type = "file", name = "@Html.NameFor(model => model.ImageFile)", id = "@Html.IdFor(model => model.ImageFile)", @onchange = "showImagePreview(this)", @class = "btn btn-default btnMain"})
+                </div>
+                <div class="col-md-offset-3 col-md-6">
+                    @Html.ValidationMessageFor(model => model.ImageFile, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ManagementPassword, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.ManagementPassword, new {htmlAttributes = new {@class = "form-control input-sm"}})
+                    @Html.ValidationMessageFor(model => model.ManagementPassword, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LicensePlate, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.LicensePlate, new {htmlAttributes = new {@class = "form-control input-sm"}})
+                    @Html.ValidationMessageFor(model => model.LicensePlate, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Manufacturer, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.Manufacturer, new {htmlAttributes = new {@class = "form-control input-sm"}})
+                    @Html.ValidationMessageFor(model => model.Manufacturer, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ManufacturYear, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.ManufacturYear, new {htmlAttributes = new { @id = "DatePicker", @class = "form-control input-sm"}})
+                    @Html.ValidationMessageFor(model => model.ManufacturYear, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VehicleModel, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.VehicleModel, new {htmlAttributes = new {@class = "form-control input-sm"}})
+                    @Html.ValidationMessageFor(model => model.VehicleModel, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DistanceTraveled, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.DistanceTraveled, new {htmlAttributes = new {@class = "form-control input-sm"}})
+                    @Html.ValidationMessageFor(model => model.DistanceTraveled, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Transmission, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @{
+                        List <SelectListItem> list = new List <SelectListItem>();
+                        if (Model.Transmission.Replace(" ", String.Empty) == "Automatic") {
+                            list = new List <SelectListItem>() {new SelectListItem() {Value = "Manual", Text = "Manual" },};
+                        }
+                        else {
+                            list = new List <SelectListItem>() {new SelectListItem() {Value = "Automatic", Text = "Automatic"},};
+                        }
+                    }
+                    @Html.DropDownListFor(model => model.Transmission, list, @Model.Transmission, new {@class = "form-control input-sm text-center"})
+                    @Html.ValidationMessageFor(model => model.Transmission, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Color, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.Color, new {htmlAttributes = new {@class = "form-control input-sm"}})
+                    @Html.ValidationMessageFor(model => model.Color, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BrancSelected, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @Html.DropDownListFor(model => model.BrancSelected, Model.BracnhList, @Model.BrancSelected, new {@class = "form-control input-sm text-center"})
+                    @Html.ValidationMessageFor(model => model.BrancSelected, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Status, htmlAttributes:new {@class = "control-label col-md-4"})
+                <div class="col-md-5">
+                    @{
+                        list = new List <SelectListItem>();
+                        if (Model.Status.Replace(" ", String.Empty) == "Avaliable") {
+                            list = new List <SelectListItem>() {new SelectListItem() {Value = "Not Avaliable", Text = "Not Avaliable" },};
+                        }
+                        else {
+                            list = new List <SelectListItem>() {new SelectListItem() {Value = "Avaliable", Text = "Avaliable" },};
+                        }
+                    }
+                    @Html.DropDownListFor(model => model.Status, list, @Model.Status, new {@class = "form-control input-sm text-center"})
+                    @Html.ValidationMessageFor(model => model.Status, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-9">
+                    <input type="submit" value="Save" class="btn btn-default btnMain"/>
+                    <br/>
+                    <br/>
+                    @Html.ActionLink("Back to List", "Index")
+                </div>
+            </div>
+        }
+    </div>
+</div>

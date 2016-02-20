@@ -4,10 +4,15 @@
 @if (User.Identity.IsAuthenticated) {
     if (User.IsInRole("Employee")) {
         <li>
-            @Html.ActionLink("[Manage]", "Manage", "Management")
+            @Html.ActionLink("[Manage]", "Index", "Management")
         </li>
     }
-
+    <li>
+        @Html.ActionLink("Order", "Index", "Order")
+    </li>
+    <li>
+        @Html.ActionLink("Garage", "Index", "Garage")
+    </li>
     <li>
         @Html.ActionLink(User.Identity.Name, "Account", "Account")
     </li>
@@ -48,6 +53,12 @@ else {
                 }
             </li>
             <li>
+                @Html.ActionLink("Order", "Index", "Order")
+            </li>
+            <li>
+                @Html.ActionLink("Garage", "Index", "Garage")
+            </li>
+            <li>
                 @Html.ActionLink("Contact", "Contact", "Home")
             </li>
             break;
@@ -66,6 +77,12 @@ else {
                     </div>
                     <input type="submit" value="Log in" class="btn btn-sm btnMain"/>
                 }
+            </li>
+            <li>
+                @Html.ActionLink("Order", "Index", "Order")
+            </li>
+            <li>
+                @Html.ActionLink("Garage", "Index", "Garage")
             </li>
             <li>
                 @Html.ActionLink("Register", "Register", "Account")

@@ -264,7 +264,7 @@
   cursor: pointer;
 }
 .bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
-  background: #eeeeee;
+  background: #040404;
 }
 .bootstrap-datetimepicker-widget table td {
   height: 54px;
@@ -286,7 +286,7 @@
 .bootstrap-datetimepicker-widget table td.hour:hover,
 .bootstrap-datetimepicker-widget table td.minute:hover,
 .bootstrap-datetimepicker-widget table td.second:hover {
-  background: #eeeeee;
+  background: #040404;
   cursor: pointer;
 }
 .bootstrap-datetimepicker-widget table td.old,
@@ -332,7 +332,7 @@
   border-radius: 4px;
 }
 .bootstrap-datetimepicker-widget table td span:hover {
-  background: #eeeeee;
+  background: #040404;
 }
 .bootstrap-datetimepicker-widget table td span.active {
   background-color: #337ab7;
