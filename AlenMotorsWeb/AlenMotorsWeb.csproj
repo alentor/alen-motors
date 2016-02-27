@@ -409,8 +409,13 @@
     <Content Include="Views\Garage\EditVehicle.cshtml" />
     <None Include="Views\Garage\Index.cshtml" />
     <Content Include="Views\Management\EditRoles.cshtml" />
+    <None Include="Views\Management\EditOrder.cshtml" />
     <None Include="Views\Management\Index.cshtml" />
+    <None Include="Views\Management\ViewAllOrders.cshtml" />
+    <None Include="Views\Management\ViewVehicle.cshtml" />
     <None Include="Views\Order\Index.cshtml" />
+    <None Include="Views\Order\ViewOrders.cshtml" />
+    <None Include="Views\Order\ViewVehicle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

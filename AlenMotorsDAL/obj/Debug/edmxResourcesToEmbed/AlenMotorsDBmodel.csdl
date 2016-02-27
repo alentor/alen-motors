@@ -44,6 +44,7 @@
     <Property Name="EndDate" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="VehicleID" Type="Int32" Nullable="false" />
     <Property Name="Status" Type="Boolean" Nullable="false" />
+    <Property Name="RentDays" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Account" Relationship="Self.FK_Orders_Accounts" FromRole="Orders" ToRole="Accounts" />
     <NavigationProperty Name="Vehicle" Relationship="Self.FK_Orders_Vehicles" FromRole="Orders" ToRole="Vehicles" />
   </EntityType>

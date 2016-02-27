@@ -146,11 +146,11 @@
                 <div class="col-md-5">
                     @{
                         list = new List <SelectListItem>();
-                        if (Model.Status.Replace(" ", String.Empty) == "Avaliable") {
-                            list = new List <SelectListItem>() {new SelectListItem() {Value = "Not Avaliable", Text = "Not Avaliable" },};
+                        if (Model.Status.Replace(" ", String.Empty) == "Available") {
+                            list = new List <SelectListItem>() {new SelectListItem() {Value = "Not Available", Text = "Not Avaliable" },};
                         }
                         else {
-                            list = new List <SelectListItem>() {new SelectListItem() {Value = "Avaliable", Text = "Avaliable" },};
+                            list = new List <SelectListItem>() {new SelectListItem() {Value = "Available", Text = "Avaliable" },};
                         }
                     }
                     @Html.DropDownListFor(model => model.Status, list, @Model.Status, new {@class = "form-control input-sm text-center"})

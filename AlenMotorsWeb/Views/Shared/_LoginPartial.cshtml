@@ -6,13 +6,14 @@
         <li>
             @Html.ActionLink("[Manage]", "Index", "Management")
         </li>
+        <li>
+            @Html.ActionLink("Garage", "Index", "Garage")
+        </li>
     }
     <li>
         @Html.ActionLink("Order", "Index", "Order")
     </li>
-    <li>
-        @Html.ActionLink("Garage", "Index", "Garage")
-    </li>
+
     <li>
         @Html.ActionLink(User.Identity.Name, "Account", "Account")
     </li>
@@ -56,9 +57,6 @@ else {
                 @Html.ActionLink("Order", "Index", "Order")
             </li>
             <li>
-                @Html.ActionLink("Garage", "Index", "Garage")
-            </li>
-            <li>
                 @Html.ActionLink("Contact", "Contact", "Home")
             </li>
             break;
@@ -80,9 +78,6 @@ else {
             </li>
             <li>
                 @Html.ActionLink("Order", "Index", "Order")
-            </li>
-            <li>
-                @Html.ActionLink("Garage", "Index", "Garage")
             </li>
             <li>
                 @Html.ActionLink("Register", "Register", "Account")

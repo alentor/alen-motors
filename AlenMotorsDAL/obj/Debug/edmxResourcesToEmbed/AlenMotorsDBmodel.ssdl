@@ -39,6 +39,7 @@
     <Property Name="EndDate" Type="nchar" MaxLength="20" Nullable="false" />
     <Property Name="VehicleID" Type="int" Nullable="false" />
     <Property Name="Status" Type="bit" Nullable="false" />
+    <Property Name="RentDays" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Roles">
     <Key>

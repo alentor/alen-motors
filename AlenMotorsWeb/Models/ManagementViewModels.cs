@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AlenMotorsDAL;
+using Newtonsoft.Json;
 
 namespace alenMotorsWeb.Models {
     public class ManagementAccountDisplayModelView {
@@ -39,13 +40,13 @@ namespace alenMotorsWeb.Models {
 
         public List <SelectListItem> RoleList{get; set;}
 
-        public List<SelectListItem> RoleListUser { get; set; }
+        public List <SelectListItem> RoleListUser{get; set;}
 
         [Display(Name = "Roles to Add")]
         public string RoleToAdd{get; set;}
 
         [Display(Name = "Roles to Remove")]
-        public string RoleToRemove { get; set; }
+        public string RoleToRemove{get; set;}
     }
 
     public class ManagementViewModel {
@@ -124,5 +125,66 @@ namespace alenMotorsWeb.Models {
         [Display(Name = "Phone number")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         public int PhoneNumber{get; set;}
+    }
+
+    public class ViewAllOrdersViewModel {
+        [Display(Name = "Search")]
+        public string SearchStr{get; set;}
+        public List <Order> Orders{get; set;}
+        public List <Account> Accounts{get; set;}
+        public List<Vehicle> Vehicles { get; set; }
+
+    }
+
+    public class EditOrderViewModel {
+        [Display(Name = "Order ID")]
+        public string OrderID{get; set;}
+        [Required]
+        [Display(Name = "Email")]
+        public string Email{get; set;}
+
+        [Required]
+        [Display(Name = "Start Date")]
+        public string StartDate{get; set;}
+
+        [Required]
+        [Display(Name = "End Date")]
+        public string EndDate{get; set;}
+
+
+        [Required]
+        [Display(Name = "Order Status")]
+        public string StatusStr{get; set;}
+    }
+
+    public class ManagementViewVehicle {
+        [Display(Name = "License Plate")]
+        public int LicensePlate{get; set;}
+
+        [Display(Name = "Manufacturer")]
+        public string Manufacturer{get; set;}
+
+        [Display(Name = "Manufactur Year")]
+        [Range(1920, 2016)]
+        public int ManufacturYear{get; set;}
+
+        [Display(Name = "Model")]
+        public string VehicleModel{get; set;}
+
+        [Display(Name = "Mileage")]
+        public int DistanceTraveled{get; set;}
+
+        [Display(Name = "Transmission")]
+        public string Transmission{get; set;}
+
+        [Display(Name = "Price")]
+        public int Price{get; set;}
+
+        [Display(Name = "Color")]
+        public string Color{get; set;}
+
+        [Display(Name = "Branch")]
+        public string BranchSelected{get; set;}
+
     }
 }

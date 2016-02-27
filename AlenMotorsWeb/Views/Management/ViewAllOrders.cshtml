@@ -1,0 +1,199 @@
+﻿@using AlenMotorsDAL
+@model alenMotorsWeb.Models.ViewAllOrdersViewModel
+
+@{
+    ViewBag.Title = "Alen Motors - View all Orders";
+}
+@section script{
+    <script>
+        $(document).ready(function(e) {
+            $('.search-panel .dropdown-menu').find('a').click(function(e) {
+                e.preventDefault();
+                var param = $(this).attr("href").replace("#", "");
+                var concept = $(this).text();
+                $('.search-panel span#search_concept').text(concept);
+                $('.input-group #search_param').val(param);
+            });
+        });
+
+
+        function Contains() {
+            $('form').get(0).setAttribute('action', '/Management/ViewOrdersContainsSearch');
+        }
+
+        function OrderID() {
+            $('form').get(0).setAttribute('action', '/Management/ViewOrdersOrderIdSearch');
+        }
+
+        function OrderIdGreaterThan() {
+            $('form').get(0).setAttribute('action', '/Management/ViewOrdersOrderIdGreaterThanSearch');
+        }
+
+        function OrderIdLessThan() {
+            $('form').get(0).setAttribute('action', '/Management/ViewOrdersOrderIdLessThanSearch');
+        }
+
+        function Email() {
+            $('form').get(0).setAttribute('action', '/Management/ViewOrdersEmailSearch');
+        }
+
+    </script>
+}
+
+
+<div class="row mainRow text-center">
+    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+    <br/>
+    <div class="col-md-12">
+        <div class="col-md-3">
+        </div>
+        <form method="post" id="openid_form" action="/Management/ViewOrdersOrderIdSearch">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-btn search-panel">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <span id="search_concept">OrderID</span> <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="" onclick="OrderID()">Order ID</a>
+                                    </li>
+                                    <li>
+                                        <a href="" onclick="OrderIdGreaterThan()">OrderID Greather than ></a>
+                                    </li>
+                                    <li>
+                                        <a href="" onclick="OrderIdLessThan()">OrderID Less than <</a>
+                                    </li>
+                                    <li>
+                                        <a href="" onclick="Email()">Email</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="" onclick="Contains()">Contains</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <input type="hidden" name="search_param" value="all" id="search_param">
+                            @Html.EditorFor(model => model.SearchStr, new {htmlAttributes = new {@class = "form-control"}, placeholder = "Search term..."})
+                            <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                    </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br/>
+
+        @Html.ActionLink("View all orders", "ViewAllOrders", "Management")
+
+
+        <h2>View Orders</h2>
+        <br/>
+
+
+        @if (@Model.Orders != null) {
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Orders List</div>
+                <!-- Table -->
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>OrderID</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>VehicleID</th>
+                        <th>Rent Days</th>
+                        <th>Order Total</th>
+                        <th>Account Email</th>
+                        <th>Order Status</th>
+                        @{
+
+                            if (User.IsInRole("Employee")) {
+                                <th>Options</th>
+                            }
+                        }
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+
+                        for (int i = 1; i <= Model.Orders.Count; i++) {
+                            <tr>
+                                <th scope="row">@i</th>
+                                <td>@Model.Orders[i - 1].OrderID</td>
+                                <td>@Model.Orders[i - 1].StartDate.Replace(" ", String.Empty)</td>
+                                <td>@Model.Orders[i - 1].EndDate.Replace(" ", String.Empty)</td>
+
+                                <td>
+                                    @Html.ActionLink(@Model.Orders[i - 1].VehicleID.ToString(), "ViewVehicle", new {@Model.Orders[i - 1].VehicleID})
+                                </td>
+                                <td>@Model.Orders[i - 1].RentDays</td>
+
+
+                                @{
+                                    foreach (Vehicle vehicle in Model.Vehicles) {
+                                        if (vehicle.VehicleID == Model.Orders[i - 1].VehicleID) {
+                                            <td>@(vehicle.Price * Model.Orders[i - 1].RentDays)</td>
+                                        }
+                                    }
+                                }
+
+
+
+
+                                @{
+                                    foreach (Account account in Model.Accounts) {
+                                        if (account.AccountID == Model.Orders[i - 1].AccountID) {
+                                            <td> @account.Email</td>
+                                        }
+                                    }
+                                }
+                                @{
+                                    if (@Model.Orders[i - 1].Status) {
+                                        <td>
+                                            Closed
+                                        </td>
+                                    }
+                                    else {
+                                        <td>
+                                            Opened
+                                        </td>
+                                    }
+                                }
+
+                                @{
+                                    if (User.IsInRole("Employee")) {
+                                        <td>
+                                            <div class="btn-group">
+                                                @Html.ActionLink("Edit Order", "EditOrder", new {@Model.Orders[i - 1].OrderID}, new {@class = "btn btn-danger input-sm"})
+                                                <button type="button" class="btn btn-danger dropdown-toggle input-sm" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        @Html.ActionLink("Remove", "RemoveOrder", new {@Model.Orders[i - 1].OrderID})
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    }
+                                }
+
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+
+            </div>
+        }
+
+    </div>
+</div>

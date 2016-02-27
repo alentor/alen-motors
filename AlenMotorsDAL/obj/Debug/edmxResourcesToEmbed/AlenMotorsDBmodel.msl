@@ -41,6 +41,7 @@
           <ScalarProperty Name="EndDate" ColumnName="EndDate" />
           <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
           <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="RentDays" ColumnName="RentDays" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

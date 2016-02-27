@@ -11,7 +11,7 @@
             $('#datetimepicker6').datetimepicker({
                 useCurrent: false, //Important! See issue #1075
                 format: 'DD/MM/YYYY',
-                minDate: moment(),
+                minDate: moment(new Date()).add(0, 'days').startOf('day'),
                 widgetPositioning: {
                     horizontal: 'left',
                     vertical: 'bottom'
@@ -20,7 +20,7 @@
             $('#datetimepicker7').datetimepicker({
                 useCurrent: false, //Important! See issue #1075
                 format: 'DD/MM/YYYY',
-                minDate: moment(),
+                minDate: moment(new Date()).add(0, 'days').startOf('day'),
                 widgetPositioning: {
                     vertical: 'bottom'
                 }
@@ -112,33 +112,6 @@
                 </div>
                 <div id="products" class="row list-group">
 
-
-                    @*<div class="item  col-xs-4 col-lg-4">
-                        <div class="thumbnail">
-                            <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" alt=""/>
-                            <div class="caption">
-                                <h4 class="group inner list-group-item-heading">
-                                    Product title
-                                </h4>
-                                <p class="group inner list-group-item-text">
-                                    Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                                    sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                                </p>
-                                <div class="row">
-                                    <div class="col-xs-12 col-md-6">
-                                        <p class="lead">
-                                            $21.000
-                                        </p>
-                                    </div>
-                                    <div class="col-xs-12 col-md-6">
-                                        <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
-
-
                     @foreach (Vehicle vehicle in Model.Vehicles) {
                         <div class="item  col-xs-4 col-lg-4">
                             <div class="thumbnail">
@@ -148,17 +121,25 @@
                                         @vehicle.Manufacturer @vehicle.Model @vehicle.ManufacturYear
                                     </h4>
                                     <p class="group inner list-group-item-text">
-                                  @Model.DatyCount days, where @vehicle.Price$ per day
+                                  @Model.DayCount days, where @vehicle.Price$ per day
                                     </p>
                                     <div class="row">
                                         <div class="col-xs-12 col-md-6">
                                             <p class="lead">
-                                                Total: @(vehicle.Price * Model.DatyCount)$
+                                                Total: @(vehicle.Price * Model.DayCount)$
                                             </p>
                                         </div>
                                         <div class="col-xs-12 col-md-6">
-                                            @*<a class="btn btn-default btnMain" href="http://www.jquery2dotnet.com">Order</a>*@
-                                            @Html.ActionLink("Order", "MakeAnOrder", new {Model.StartDate, Model.EndDate}, new { @class = "btn btn-default btnMain" })
+                                            @{
+                                                if (User.Identity.IsAuthenticated) {
+                                                    @Html.ActionLink("Order", "MakeAnOrder", new {vehicle.VehicleID, Model.StartDate, Model.EndDate, Model.DayCount}, new {@class = "btn btn-default btnMain"})
+
+                                                }
+                                                else {
+                                                    @Html.ActionLink("Login to order", "Login","Account", new { vehicle.VehicleID, Model.StartDate, Model.EndDate, Model.DayCount }, new { @class = "btn btn-default btnMain" })
+
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>

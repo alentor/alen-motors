@@ -11,7 +11,7 @@ using Microsoft.ApplicationInsights.Channel;
 
 namespace alenMotorsWeb.Controllers {
     public class GarageController: Controller {
-        [AllowAnonymous]
+        [Authorize(Roles = "Employee")]
         // GET => Garage/Index
         public ActionResult Index() {
             GarageViewModel model = new GarageViewModel();
@@ -74,7 +74,7 @@ namespace alenMotorsWeb.Controllers {
                 ManufacturYear = model.ManufacturYear,
                 Manufacturer = model.Manufacturer,
                 Price = model.Price,
-                Status = "Avaliable"
+                Status = "Available"
             };
 
             string serverPath = Server.MapPath("~/Content/GarageImages");

@@ -257,5 +257,45 @@ namespace AlenMotorsDAL {
                 return userManagerResult;
             }
         }
+
+        public static UserManagerResult GetUserByUserID(int userID) {
+            UserManagerResult userManagerResult = new UserManagerResult();
+            try {
+                using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
+                        if (account.AccountID == userID) {
+                            userManagerResult.User = account;
+                            userManagerResult.Success = true;
+                            return userManagerResult;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) {
+                userManagerResult.ErrorMessage = ex.Message;
+                return userManagerResult;
+            }
+            return null;
+        }
+
+        public static UserManagerResult GetUserByOrderID(int orderID) {
+            UserManagerResult userManagerResult = new UserManagerResult();
+            try {
+                using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
+                        if (account.Orders.ToList().Any(Order => Order.OrderID == orderID)) {
+                            userManagerResult.User = account;
+                            userManagerResult.Success = true;
+                            return userManagerResult;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) {
+                userManagerResult.ErrorMessage = ex.Message;
+                return userManagerResult;
+            }
+            return null;
+        }
     }
 }

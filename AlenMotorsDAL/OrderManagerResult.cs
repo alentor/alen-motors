@@ -10,11 +10,11 @@ namespace AlenMotorsDAL {
         public string ErrorMessage{get; set;}
         public Order Order{get; set;}
 
-        public List <Order> VehicleList{get; set;}
+        public List <Order> Orders{get; set;}
 
         public OrderManagerResult() {
             Success = false;
-            VehicleList = new List <Order>();
+            Orders = new List <Order>();
         }
     }
 }

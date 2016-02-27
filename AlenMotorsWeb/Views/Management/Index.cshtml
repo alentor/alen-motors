@@ -4,6 +4,8 @@
 
 <div class="row mainRow text-center">
     <h1>Management</h1>
+
+    @Html.ActionLink("View Orders", "ViewAllOrders", "Management", null, new {@class = "btn btn-default btnMain"})
     <hr/>
     <div class="row">
         @Html.ValidationSummary(true, "", new {@class = "text-danger"})

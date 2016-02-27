@@ -90,6 +90,8 @@
     <Compile Include="Role.cs">
       <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SearchManager.cs" />
+    <Compile Include="SearchManagerResult.cs" />
     <Compile Include="Vehicle.cs">
       <DependentUpon>AlenMotorsDBmodel.tt</DependentUpon>
     </Compile>

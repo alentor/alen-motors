@@ -109,6 +109,9 @@ footer { padding-top: 9px; }
 
 .carousel-control { z-index: 3; }
 
+.btn-index {
+    margin-top: 20px;
+}
 .btnMain {
     color: #bbbbbb;
     background-color: #000000;
@@ -298,3 +301,8 @@ table.table td img {
 .item.list-group-item:after { clear: both; }
 
 .list-group-item-text { margin: 0 0 11px; }
+
+
+
+
+

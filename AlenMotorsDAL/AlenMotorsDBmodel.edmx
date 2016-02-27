@@ -44,6 +44,7 @@
           <Property Name="EndDate" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="VehicleID" Type="int" Nullable="false" />
           <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="RentDays" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -222,6 +223,7 @@
           <Property Name="EndDate" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="VehicleID" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="RentDays" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="Self.FK_Orders_Accounts" FromRole="Orders" ToRole="Accounts" />
           <NavigationProperty Name="Vehicle" Relationship="Self.FK_Orders_Vehicles" FromRole="Orders" ToRole="Vehicles" />
         </EntityType>
@@ -386,6 +388,7 @@
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RentDays" ColumnName="RentDays" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

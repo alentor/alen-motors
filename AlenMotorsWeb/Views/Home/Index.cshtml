@@ -1,4 +1,7 @@
-﻿@{
+﻿@using System.Web.UI.WebControls
+@model alenMotorsWeb.Models.OrderViewModel
+
+@{
     ViewBag.Title = "Alen Motors";
     Layout = "/Views/Home/_LayoutIndex.cshtml";
 }
@@ -9,7 +12,7 @@
             $('#datetimepicker6').datetimepicker({
                 useCurrent: false, //Important! See issue #1075
                 format: 'DD/MM/YYYY',
-                minDate: moment(),
+                minDate: moment(new Date()).add(0, 'days').startOf('day'),
                 widgetPositioning: {
                     horizontal: 'left',
                     vertical: 'bottom'
@@ -18,7 +21,7 @@
             $('#datetimepicker7').datetimepicker({
                 useCurrent: false, //Important! See issue #1075
                 format: 'DD/MM/YYYY',
-                minDate: moment(),
+                minDate: moment(new Date()).add(0, 'days').startOf('day'),
                 widgetPositioning: {
                     vertical: 'bottom'
                 }
@@ -34,14 +37,11 @@
 
     </script>
 }
-<div class="overlay">
+
+
+@*<div class="overlay">
     <h2>Check Rental Car Rates</h2>
     <div class="row center-block">
-        @*<div class="row">
-            <div class="col-md-6 text-center">Pickup</div>
-            <div class="col-md-6 text-center">Return</div>
-        </div>*@
-        @*<input type="text" class="datepicker" style="color: red;"/><br/>*@
         <div class="col-md-6 col-sm-6 col-xs-6">
             <div class="form-group">
                 <h5>Pickup</h5>
@@ -64,21 +64,43 @@
                 </div>
             </div>
         </div>
-        @*<a href="#" class="btn btn-default btnMain btnIndexSearch btn-lg">Search
-            <span class="input-group-addon">
-                <span class="glyphicon glyphicon-search"></span>
-            </span>
-        </a>*@
+
         <a href='@Url.Action("Contact", "Home")' type="button" class="btn btn-default btnMain btnMain-light btn-lg">
             <span class="glyphicon glyphicon-search pull-right" aria-hidden="true"></span>Search
-        </a>
-        @*<div class="hero-unit">
-                <div class="input-daterange" id="datepicker">
-                    <input type="text" class="input-small" name="start" />
-                    <span class="add-on" style="vertical-align: top;height:20px">to</span>
-                    <input type="text" class="input-small" name="end" />
+        </a>*@
+<div class="overlay">
+    <h2>Check Rental Car Rates</h2>
+    <div class="row center-block">
+        @using (Html.BeginForm("Index", "Order", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {encType = "multipart/form-data", @class = "form-inline", role = "form"})) {
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                    <h5>Pickup</h5>
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new {@class = "text-danger"})
+                    <div class="input-group date" id="datetimepicker6">
+                        @Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control text-center"}})
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
                 </div>
-            </div>*@
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <h5>Return</h5>
+                @Html.ValidationMessageFor(model => model.EndDate, "", new {@class = "text-danger"})
+                <div class="form-group">
+                    <div class="input-group date" id="datetimepicker7">
+                        @Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control text-center"}})
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" value="Show offers" class="btn btn-default btnMain btnMain-light btn-lg btn-index">
+                Search
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </Button>
+        }
     </div>
 </div>
 

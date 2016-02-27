@@ -36,6 +36,10 @@ namespace alenMotorsWeb.Controllers {
             if (TempData["EditRole"] != null) {
                 ModelState.AddModelError(string.Empty, TempData["EditRole"].ToString());
             }
+            if (TempData["ViewAllOrders"] != null) {
+                ModelState.AddModelError(string.Empty, TempData["ViewAllOrders"].ToString());
+            }
+
             // Roels for DropDown
             UserRoleManagerResult getRolesResult = UserRoleManager.GetRoles();
             if (getRolesResult.Success) {
@@ -53,7 +57,6 @@ namespace alenMotorsWeb.Controllers {
             }
             else {
                 TempData["ManagementError"] = getBranchesResult.ErrorMessage;
-                ModelState.AddModelError(string.Empty, TempData["ManagementError"].ToString());
             }
 
             // Uset List
@@ -274,6 +277,7 @@ namespace alenMotorsWeb.Controllers {
         }
 
 
+        // Post => Management/AddRoleToUSER
         [Authorize(Roles = "Developer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -292,6 +296,7 @@ namespace alenMotorsWeb.Controllers {
             return RedirectToAction("EditRoles", "Management", new {email = model.Email});
         }
 
+        // Post => Management/RemoveRoleFromUser
         [Authorize(Roles = "Developer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -308,6 +313,296 @@ namespace alenMotorsWeb.Controllers {
             }
             TempData["AddRoleToUser"] = removeRoleFromUserResult.ErrorMessage;
             return RedirectToAction("EditRoles", "Management", new {email = model.Email});
+        }
+
+        // Get => Management/ViewAllOrders
+        [Authorize(Roles = "Employee")]
+        public ActionResult ViewAllOrders(string searchStr, string searchType) {
+            ViewAllOrdersViewModel model;
+            switch (searchType) {
+                case "contains":{
+                    VehicleManagerResult vehicleManagerResult = VehicleManager.GetVehicles();
+                    if (!vehicleManagerResult.Success) {
+                        ModelState.AddModelError("", vehicleManagerResult.ErrorMessage);
+                        return RedirectToAction("Account", "Account");
+                    }
+                    UserManagerResult userManagerResult = UserManager.GetUsers();
+                    if (!userManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    SearchManagerResult searchManagerResult = SearchManager.ViewOrdersContainsSearch(searchStr);
+                    if (!searchManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    model = new ViewAllOrdersViewModel {
+                        Orders = searchManagerResult.Orders,
+                        Accounts = userManagerResult.UserList,
+                        Vehicles = vehicleManagerResult.VehicleList
+                    };
+                    ModelState.AddModelError("", model.Orders.Count + " Results");
+                }
+                    break;
+
+                case "orderId":{
+                    VehicleManagerResult vehicleManagerResult = VehicleManager.GetVehicles();
+                    if (!vehicleManagerResult.Success) {
+                        ModelState.AddModelError("", vehicleManagerResult.ErrorMessage);
+                        return RedirectToAction("Account", "Account");
+                    }
+                    UserManagerResult userManagerResult = UserManager.GetUsers();
+                    if (!userManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    SearchManagerResult searchManagerResult = SearchManager.ViewOrdersOrderIdSearch(searchStr);
+                    if (!searchManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    model = new ViewAllOrdersViewModel {
+                        Orders = searchManagerResult.Orders,
+                        Accounts = userManagerResult.UserList,
+                        Vehicles = vehicleManagerResult.VehicleList
+                    };
+                    ModelState.AddModelError("", model.Orders.Count + " Results");
+                }
+                    break;
+
+                case "orderIdGreaterThan":{
+                    VehicleManagerResult vehicleManagerResult = VehicleManager.GetVehicles();
+                    if (!vehicleManagerResult.Success) {
+                        ModelState.AddModelError("", vehicleManagerResult.ErrorMessage);
+                        return RedirectToAction("Account", "Account");
+                    }
+                    UserManagerResult userManagerResult = UserManager.GetUsers();
+                    if (!userManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    SearchManagerResult searchManagerResult = SearchManager.ViewOrdersOrderIdGreaterThanSearch(searchStr);
+                    if (!searchManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    model = new ViewAllOrdersViewModel {
+                        Orders = searchManagerResult.Orders,
+                        Accounts = userManagerResult.UserList,
+                        Vehicles = vehicleManagerResult.VehicleList
+                    };
+                    ModelState.AddModelError("", model.Orders.Count + " Results");
+                }
+                    break;
+
+                case "orderIdLessThan":{
+                    VehicleManagerResult vehicleManagerResult = VehicleManager.GetVehicles();
+                    if (!vehicleManagerResult.Success) {
+                        ModelState.AddModelError("", vehicleManagerResult.ErrorMessage);
+                        return RedirectToAction("Account", "Account");
+                    }
+                    UserManagerResult userManagerResult = UserManager.GetUsers();
+                    if (!userManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    SearchManagerResult searchManagerResult = SearchManager.ViewOrdersOrderIdLessThanSearch(searchStr);
+                    if (!searchManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    model = new ViewAllOrdersViewModel {
+                        Orders = searchManagerResult.Orders,
+                        Accounts = userManagerResult.UserList,
+                        Vehicles = vehicleManagerResult.VehicleList
+                    };
+                    ModelState.AddModelError("", model.Orders.Count + " Results");
+                }
+                    break;
+
+                case "Email":{
+                    VehicleManagerResult vehicleManagerResult = VehicleManager.GetVehicles();
+                    if (!vehicleManagerResult.Success) {
+                        ModelState.AddModelError("", vehicleManagerResult.ErrorMessage);
+                        return RedirectToAction("Account", "Account");
+                    }
+                    UserManagerResult userManagerResult = UserManager.GetUsers();
+                    if (!userManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    SearchManagerResult searchManagerResult = SearchManager.ViewOrdersEmaildSearch(searchStr);
+                    if (!searchManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    model = new ViewAllOrdersViewModel {
+                        Orders = searchManagerResult.Orders,
+                        Accounts = userManagerResult.UserList,
+                        Vehicles = vehicleManagerResult.VehicleList
+                    };
+                    ModelState.AddModelError("", model.Orders.Count + " Results");
+                }
+                    break;
+
+                default:{
+                    VehicleManagerResult vehicleManagerResult = VehicleManager.GetVehicles();
+                    if (!vehicleManagerResult.Success) {
+                        ModelState.AddModelError("", vehicleManagerResult.ErrorMessage);
+                        return RedirectToAction("Account", "Account");
+                    }
+                    OrderManagerResult orderManagerResult = OrderManager.GetAllOrders();
+                    if (!orderManagerResult.Success) {
+                        TempData["ViewAllOrders"] = orderManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    UserManagerResult userManagerResult = UserManager.GetUsers();
+                    if (!userManagerResult.Success) {
+                        TempData["ViewAllOrders"] = userManagerResult.ErrorMessage;
+                        return RedirectToAction("Index", "Management");
+                    }
+                    if (TempData["EditOrder"] != null) {
+                        ModelState.AddModelError(string.Empty, TempData["EditOrder"].ToString());
+                    }
+                    model = new ViewAllOrdersViewModel {
+                        Orders = orderManagerResult.Orders,
+                        Accounts = userManagerResult.UserList,
+                        Vehicles = vehicleManagerResult.VehicleList
+                    };
+                    break;
+                }
+            }
+            return View(model);
+        }
+
+        // Post => Management/ViewOrdersContainsSearch
+        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public ActionResult ViewOrdersContainsSearch(string searchStr) {
+            return RedirectToAction("ViewAllOrders", "Management", new {searchStr, searchType = "contains"});
+        }
+
+        // Post => Management/ViewOrdersOrderIDSearch
+        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public ActionResult ViewOrdersOrderIdSearch(string searchStr) {
+            return RedirectToAction("ViewAllOrders", "Management", new {searchStr, searchType = "orderId"});
+        }
+
+        // Post => Management/ViewOrdersOrderIDSearch
+        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public ActionResult ViewOrdersOrderIdGreaterThanSearch(string searchStr) {
+            return RedirectToAction("ViewAllOrders", "Management", new {searchStr, searchType = "orderIdGreaterThan" });
+        }
+
+        // Post => Management/ViewOrdersOrderIDSearch
+        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public ActionResult ViewOrdersOrderIdLessThanSearch(string searchStr) {
+            return RedirectToAction("ViewAllOrders", "Management", new {searchStr, searchType = "orderIdLessThan"});
+        }
+
+        // Post => Management/ViewOrdersOrderIDSearch
+        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public ActionResult ViewOrdersEmailSearch(string searchStr)
+        {
+            return RedirectToAction("ViewAllOrders", "Management", new { searchStr, searchType = "Email" });
+        }
+
+        // Get => Management/EditOrders
+        [Authorize(Roles = "Employee")]
+        public ActionResult EditOrder(string orderID) {
+            //Order orderToEdit = new Order {OrderID = int.Parse(orderID)};
+            OrderManagerResult orderManagerResult = OrderManager.GetOrder(orderID);
+            if (!orderManagerResult.Success) {
+                TempData["EditOrder"] = orderManagerResult.ErrorMessage;
+                return RedirectToAction("Index", "Management");
+            }
+            UserManagerResult userManagerResult = UserManager.GetUserByUserID(orderManagerResult.Order.AccountID);
+            if (!userManagerResult.Success) {
+                TempData["EditOrder"] = orderManagerResult.ErrorMessage;
+                return RedirectToAction("Index", "Management");
+            }
+            EditOrderViewModel model = new EditOrderViewModel {
+                StartDate = orderManagerResult.Order.StartDate.Replace(" ", String.Empty),
+                EndDate = orderManagerResult.Order.EndDate.Replace(" ", String.Empty),
+                Email = userManagerResult.User.Email,
+                OrderID = orderManagerResult.Order.OrderID.ToString()
+            };
+            model.StatusStr = orderManagerResult.Order.Status ? "Closed" : "Opened";
+            return View(model);
+        }
+
+        // Post => Management/EditOrders
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public ActionResult EditOrder(EditOrderViewModel model) {
+            if (!ModelState.IsValid) {
+                TempData["EditOrder"] = "Model validation Error";
+                return RedirectToAction("ViewAllOrders", "Management");
+            }
+            OrderManagerResult orderManagerResult;
+            if (model.StatusStr == "Opened") {
+                orderManagerResult =
+                OrderManager.EditOrder(
+                                       new Order {
+                                           OrderID = int.Parse(model.OrderID),
+                                           StartDate = model.StartDate,
+                                           EndDate = model.EndDate,
+                                           Status = false
+                                       },
+                                       model.Email);
+                if (!orderManagerResult.Success) {
+                    TempData["EditOrder"] = orderManagerResult.ErrorMessage;
+                    return RedirectToAction("ViewAllOrders", "Management");
+                }
+                TempData["EditOrder"] = "Order edited successfully";
+                return RedirectToAction("ViewAllOrders", "Management");
+            }
+            orderManagerResult =
+            OrderManager.EditOrder(
+                                   new Order {OrderID = int.Parse(model.OrderID), StartDate = model.StartDate, EndDate = model.EndDate, Status = true},
+                                   model.Email);
+            if (!orderManagerResult.Success) {
+                TempData["EditOrder"] = orderManagerResult.ErrorMessage;
+                return RedirectToAction("ViewAllOrders", "Management");
+            }
+            TempData["EditOrder"] = "Order edited successfully";
+            return RedirectToAction("ViewAllOrders", "Management");
+        }
+
+        [Authorize(Roles = "Manager")]
+        public ActionResult RemoveOrder(string OrderID) {
+            OrderManagerResult orderManagerResult = OrderManager.RemoveOrder(Int32.Parse(OrderID));
+            if (!orderManagerResult.Success) {
+                TempData["EditOrder"] = orderManagerResult.ErrorMessage;
+                return RedirectToAction("ViewAllOrders", "Management");
+            }
+            TempData["EditOrder"] = "Order Removed successfully";
+            return RedirectToAction("ViewAllOrders", "Management");
+        }
+
+
+        public ActionResult ViewVehicle(string vehicleID) {
+            VehicleManagerResult vehicleManagerResult = VehicleManager.GetVehicleById(int.Parse(vehicleID));
+            if (!vehicleManagerResult.Success) {
+                TempData["EditOrder"] = vehicleManagerResult.ErrorMessage;
+                return RedirectToAction("ViewAllOrders", "Management");
+            }
+            ManagementViewVehicle model = new ManagementViewVehicle {
+                Color = vehicleManagerResult.Vehicle.Color,
+                DistanceTraveled = vehicleManagerResult.Vehicle.DistanceTraveled,
+                Manufacturer = vehicleManagerResult.Vehicle.Manufacturer,
+                ManufacturYear = vehicleManagerResult.Vehicle.ManufacturYear,
+                VehicleModel = vehicleManagerResult.Vehicle.Model,
+                LicensePlate = vehicleManagerResult.Vehicle.LicensePlate,
+                Transmission = vehicleManagerResult.Vehicle.Transmission,
+                Price = vehicleManagerResult.Vehicle.Price
+            };
+
+            return View(model);
         }
     }
 }
