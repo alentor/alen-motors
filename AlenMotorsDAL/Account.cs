@@ -30,6 +30,8 @@ namespace AlenMotorsDAL
         public string Gender { get; set; }
         public string BirthDate { get; set; }
         public string RegistrationDate { get; set; }
+        public string VerifyString { get; set; }
+        public bool Verified { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccountInRole> AccountsInRoles { get; set; }

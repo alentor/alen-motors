@@ -13,6 +13,8 @@
           <ScalarProperty Name="Gender" ColumnName="Gender" />
           <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
           <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+          <ScalarProperty Name="VerifyString" ColumnName="VerifyString" />
+          <ScalarProperty Name="Verified" ColumnName="Verified" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

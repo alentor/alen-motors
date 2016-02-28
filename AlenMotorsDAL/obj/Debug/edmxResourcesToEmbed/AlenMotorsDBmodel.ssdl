@@ -6,13 +6,15 @@
     </Key>
     <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Email" Type="nchar" MaxLength="50" Nullable="false" />
-    <Property Name="Password" Type="nchar" MaxLength="30" Nullable="false" />
+    <Property Name="Password" Type="nchar" MaxLength="100" Nullable="false" />
     <Property Name="LastName" Type="nchar" MaxLength="30" Nullable="false" />
     <Property Name="FirstName" Type="nchar" MaxLength="30" Nullable="false" />
     <Property Name="PhoneNumber" Type="int" Nullable="false" />
     <Property Name="Gender" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="BirthDate" Type="nchar" MaxLength="30" Nullable="false" />
     <Property Name="RegistrationDate" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="VerifyString" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="Verified" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="AccountsInRoles">
     <Key>

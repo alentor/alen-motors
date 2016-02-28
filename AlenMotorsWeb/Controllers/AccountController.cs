@@ -31,7 +31,27 @@ namespace alenMotorsWeb.Controllers {
                                                                    model.PhoneNumber,
                                                                    model.BirthDate);
             if (registerResult.Success) {
-                return RedirectToAction("Login", "Account");
+                //return RedirectToAction("Login", "Account");
+
+                System.Net.Mail.MailMessage mailMessage =
+                new System.Net.Mail.MailMessage(new System.Net.Mail.MailAddress("sender@mydomain.com", "Alen Motors Registration"),
+                                                new System.Net.Mail.MailAddress(model.Email));
+                mailMessage.Subject = "Email confirmation";
+                mailMessage.Body =
+                string.Format(
+                              "Dear {0}<BR/>Thank you for your registration, please click on the below link to complete your registration: <a href=\"{1}\" title=\"User Email Confirm\">{1}</a>",
+                              model.FirstName + " " + model.LastName,
+                              Url.Action("ConfirmEmail",
+                                         "Account",
+                                         new {Email = model.Email, verifyString = registerResult.VerifyString},
+                                         Request.Url.Scheme));
+                mailMessage.IsBodyHtml = true;
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com");
+                smtp.Credentials = new System.Net.NetworkCredential("asslister@gmail.com", "zkwsbhirtimywuwt");
+                smtp.EnableSsl = true;
+                smtp.Send(mailMessage);
+                TempData["RegisterError"] = "Registration complete, please check your email for confirmation";
+                return RedirectToAction("Login", "Account" /*, new {Email = model.Email}*/);
             }
             ModelState.AddModelError("", registerResult.ErrorMessage);
             return View(model);
@@ -40,6 +60,12 @@ namespace alenMotorsWeb.Controllers {
         // GET => /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl) {
+            if (TempData["RegisterError"] != null) {
+                ModelState.AddModelError(string.Empty, TempData["RegisterError"].ToString());
+            }
+            if (TempData["VerifyError"] != null) {
+                ModelState.AddModelError(string.Empty, TempData["VerifyError"].ToString());
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -152,6 +178,16 @@ namespace alenMotorsWeb.Controllers {
             Session.Clear();
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ConfirmEmail(string email, string verifyString) {
+            UserManagerResult userManagerResult = UserManager.VerifyUser(email, verifyString);
+            if (!userManagerResult.Success) {
+                TempData["VerifyError"] = userManagerResult.ErrorMessage;
+                return RedirectToAction("Login", "Account");
+            }
+            TempData["VerifyError"] = "Account verified successfully";
+            return RedirectToAction("Login", "Account");
         }
     }
 }

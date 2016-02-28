@@ -23,6 +23,7 @@ namespace AlenMotorsDAL {
             UserManagerResult userManagerResult = new UserManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    string verifyString = Generic.VerifyEmailHash(email);
                     if (alenMotorsDbEntities.Accounts.Any(account => account.Email == email)) {
                         userManagerResult.ErrorMessage = "Email is already in use, please use a different one.";
                         return userManagerResult;
@@ -35,11 +36,14 @@ namespace AlenMotorsDAL {
                         Gender = gender,
                         BirthDate = birthDate,
                         PhoneNumber = phoneNumber,
-                        RegistrationDate = DateTime.Now.ToString("{0:d/M/yyyy HH:mm:ss}")
+                        RegistrationDate = DateTime.Now.ToString("{0:d/M/yyyy HH:mm:ss}"),
+                        VerifyString = verifyString
                     });
                     alenMotorsDbEntities.SaveChanges();
                     UserRoleManagerResult addUserToRole = UserRoleManager.AddRoleToUser(email, "User");
                     if (addUserToRole.Success) {
+                        //
+                        userManagerResult.VerifyString = verifyString;
                         userManagerResult.Success = true;
                         return userManagerResult;
                     }
@@ -51,6 +55,32 @@ namespace AlenMotorsDAL {
                 userManagerResult.ErrorMessage = ex.Message;
                 return userManagerResult;
             }
+        }
+        /// <summary>
+        /// Verifies the account
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="verifyString"></param>
+        /// <returns>Retuns true if the verification was correct, else returns string with an error message</returns>
+        public static UserManagerResult VerifyUser(string email, string verifyString) {
+            UserManagerResult userManagerResult = new UserManagerResult();
+            try {
+                using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
+                    foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
+                        if (account.Email.Replace(" ", String.Empty) == email && account.VerifyString.Replace(" ", String.Empty) == verifyString) {
+                            account.Verified = true;
+                            alenMotorsDbEntities.SaveChanges();
+                            userManagerResult.Success = true;
+                            return userManagerResult;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) {
+                userManagerResult.ErrorMessage = ex.Message;
+                return userManagerResult;
+            }
+            return null;
         }
 
         /// <summary>
@@ -94,21 +124,27 @@ namespace AlenMotorsDAL {
             UserManagerResult userManagerResult = new UserManagerResult();
             try {
                 using (AlenMotorsDbEntities alenMotorsDbEntities = new AlenMotorsDbEntities()) {
-                    if (Enumerable.Any(alenMotorsDbEntities.Accounts,
-                                       account =>
-                                       account.Email.Replace(" ", string.Empty) == email &&
-                                       account.Password.Replace(" ", string.Empty) == Generic.EncodePassword(password, email))) {
-                        userManagerResult.Success = true;
-                        return userManagerResult;
+                    foreach (Account account in alenMotorsDbEntities.Accounts.ToList()) {
+                        if (account.Email.Replace(" ", String.Empty) == email) {
+                            if (account.Verified) {
+                                if (account.Password.Replace(" ", string.Empty) == Generic.EncodePassword(password, email)) {
+                                    userManagerResult.Success = true;
+                                    return userManagerResult;
+                                }
+                                userManagerResult.ErrorMessage = "Email and Password don't match.";
+                                return userManagerResult;
+                            }
+                            userManagerResult.ErrorMessage = "You haven't verified your account, please check your email and verify your account";
+                            return userManagerResult;
+                        }
                     }
-                    userManagerResult.ErrorMessage = "Email and Password don't match.";
-                    return userManagerResult;
                 }
             }
             catch (Exception ex) {
                 userManagerResult.ErrorMessage = ex.Message;
                 return userManagerResult;
             }
+            return null;
         }
 
         /// <summary>

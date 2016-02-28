@@ -11,13 +11,15 @@
           </Key>
           <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Email" Type="nchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="nchar" MaxLength="100" Nullable="false" />
           <Property Name="LastName" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="FirstName" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="PhoneNumber" Type="int" Nullable="false" />
           <Property Name="Gender" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="BirthDate" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="RegistrationDate" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="VerifyString" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Verified" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="AccountsInRoles">
           <Key>
@@ -185,13 +187,15 @@
           </Key>
           <Property Name="AccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="PhoneNumber" Type="Int32" Nullable="false" />
           <Property Name="Gender" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="BirthDate" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="RegistrationDate" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VerifyString" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Verified" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AccountsInRoles" Relationship="Self.FK_Accounts_AccountID" FromRole="Accounts" ToRole="AccountsInRoles" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Accounts" FromRole="Accounts" ToRole="Orders" />
         </EntityType>
@@ -360,6 +364,8 @@
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
                 <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="VerifyString" ColumnName="VerifyString" />
+                <ScalarProperty Name="Verified" ColumnName="Verified" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
