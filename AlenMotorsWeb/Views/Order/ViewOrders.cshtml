@@ -1,0 +1,74 @@
+﻿@using AlenMotorsDAL
+@model alenMotorsWeb.Models.OrderListUserViewModel
+
+@{
+    ViewBag.Title = "Alen Motors - Orders overview";
+}
+
+
+<div class="row mainRow text-center">
+    <h2>View Orders</h2>
+    <br/>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Orders List</div>
+            <!-- Table -->
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>OrderID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Order Total</th>
+                    <th>Rent Days</th>
+                    <th>VehicleID</th>
+                    <th>Order Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                @{
+                    for (int i = 1; i <= Model.OrderList.Count; i++) {
+                        <tr>
+                            <th scope="row">@i</th>
+                            <td>@Model.OrderList[i - 1].OrderID</td>
+                            <td>@Model.OrderList[i - 1].StartDate.Replace(" ", String.Empty)</td>
+                            <td>@Model.OrderList[i - 1].EndDate.Replace(" ", String.Empty)</td>
+
+
+                            @{
+                                foreach (Vehicle vehicle in Model.Vehicles) {
+                                    if (vehicle.VehicleID == Model.OrderList[i - 1].VehicleID) {
+                                        <td>@(vehicle.Price * Model.OrderList[i - 1].RentDays)</td>
+                                    }
+                                }
+                            }
+
+
+                            <td>@Model.OrderList[i - 1].RentDays</td>
+                            <td>
+                                @Html.ActionLink(@Model.OrderList[i - 1].VehicleID.ToString(), "ViewVehicle", new {@Model.OrderList[i - 1].VehicleID})
+                            </td>
+                            @{
+                                if (@Model.OrderList[i - 1].Status) {
+                                    <td>
+                                        Closed
+                                    </td>
+                                }
+                                else {
+                                    <td>
+                                        Opened
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,98 @@
+﻿@using AlenMotorsDAL
+@model alenMotorsWeb.Models.GarageViewModel
+@{
+    ViewBag.Title = "Alen Motors - Garage";
+}
+
+<div class="row mainRow text-center">
+    <h1>Garage</h1>
+    <hr/>
+    <div class="row">
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        @{
+            if (User.IsInRole("Manager")) {
+                @Html.ActionLink("Add Vehicle", "AddVehicle", null, new {@class = "btn btn-default btnMain"})
+            }
+            <br/>
+            <br/>
+        }
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Vehicle List</div>
+                <!-- Table -->
+                <table class="table table-bordered table-hover table-responsive">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Photo</th>
+                        <th>VehicleID</th>
+                        <th>Model</th>
+                        <th>Price</th>;
+                        <th>Color</th>
+                        <th>Transmission</th>
+                        <th>Manufactur Year</th>
+                        <th>Manufacturer</th>
+                        <th>Status</th>
+                        <th>Branch</th>
+                        <th>Order</th>
+                        @{
+                            if (User.IsInRole("Manager")) {
+                                <th>Options</th>
+                            }
+                        }
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        for (int i = 1; i <= Model.VehicleList.Count; i++) {
+                            <tr>
+                                <th scope="row">@i</th>
+                                <td class="col-md-2">
+                                    <img src="@Url.Content("~/Content/GarageImages/")@Model.VehicleList[i - 1].ImageUrl.Replace(" ", String.Empty)" class="img-rounded GarageImg"/>
+                                </td>
+                                <td>@Model.VehicleList[i - 1].VehicleID</td>
+                                <td>@Model.VehicleList[i - 1].Model</td>
+                                <td>@Model.VehicleList[i - 1].Price$</td>
+                                <td>@Model.VehicleList[i - 1].Color</td>
+                                <td>@Model.VehicleList[i - 1].Transmission</td>
+                                <td>@Model.VehicleList[i - 1].ManufacturYear</td>
+                                <td>@Model.VehicleList[i - 1].Manufacturer</td>
+                                <td>@Model.VehicleList[i - 1].Status</td>
+                                @{
+                                    foreach (Branch branch in Model.BrancheList) {
+                                        if (branch.BranchID == @Model.VehicleList[i - 1].BranchID) {
+                                            <td> @branch.BranchName </td>
+                                        }
+                                    }
+                                }
+                                <td>
+                                    @Html.ActionLink("Order", "OrderGarage","Order", new { vehicle = @Model.VehicleList[i-1].VehicleID }, new { @class = "btn btn-default btnMain" })
+                                </td>
+                                @{
+                                    if (User.IsInRole("Manager")) {
+                                        <td>
+                                            <div class="btn-group">
+                                                @Html.ActionLink("Edit Vehicle", "EditVehicle", new {Model.VehicleList[i - 1].VehicleID}, new {@class = "btn btn-danger input-sm"})
+                                                <button type="button" class="btn btn-danger dropdown-toggle input-sm" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        @Html.ActionLink("Remove", "RemoveVehicle", new {Model.VehicleList[i - 1].VehicleID}, null)
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

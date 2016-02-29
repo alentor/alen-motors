@@ -1,0 +1,149 @@
+﻿@model alenMotorsWeb.Models.ManagementViewModel
+
+@{ ViewBag.Title = "Alen Motors - Management"; }
+
+<div class="row mainRow text-center">
+    <h1>Management</h1>
+
+    @Html.ActionLink("View Orders", "ViewAllOrders", "Management", null, new {@class = "btn btn-default btnMain"})
+    <hr/>
+    <div class="row">
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        @{
+            if (User.IsInRole("Developer")) {
+                <div class="col-md-6">
+
+                    @using (Html.BeginForm("AddNewRole", "Management", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"})) {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NewRole, htmlAttributes:new {@class = "control-label col-md-5"})
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.NewRole, new {htmlAttributes = new {@class = "form-control input-sm"}})
+                                @Html.ValidationMessageFor(model => model.NewRole, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-11">
+                                <input type="submit" value="Add Role" class="btn btn-default btnMain"/>
+                            </div>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("RemvoeRole", "Management", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"})) {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.RoleToRemove, htmlAttributes:new {@class = "control-label col-md-5"})
+                            <div class="col-md-5">
+                                @Html.DropDownListFor(model => model.RoleToRemove, Model.RoleList, "", new {@class = "form-control input-sm text-center"})
+                                @Html.ValidationMessageFor(model => model.RoleToRemove, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-11">
+                                <input type="submit" value="Remove Role" class="btn btn-default btnMain"/>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-6">
+
+                    @using (Html.BeginForm("AdddNewBranch", "Management", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"})) {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NewBranch, htmlAttributes:new {@class = "control-label col-md-5"})
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.NewBranch, new {htmlAttributes = new {@class = "form-control input-sm"}})
+                                @Html.ValidationMessageFor(model => model.NewBranch, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-11">
+                                <input type="submit" value="Add Branch" class="btn btn-default btnMain"/>
+                            </div>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("RemoveBranch", "Management", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"})) {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BranchToRemove, htmlAttributes:new {@class = "control-label col-md-5"})
+                            <div class="col-md-5">
+                                @Html.DropDownListFor(model => model.BranchToRemove, Model.BracnhList, "", new {@class = "form-control input-sm text-center"})
+                                @Html.ValidationMessageFor(model => model.BranchToRemove, "", new {@class = "text-danger"})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-11">
+                                <input type="submit" value="Remove Branch" class="btn btn-default btnMain"/>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Users List</div>
+            <!-- Table -->
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Email</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Roles</th>
+                    <th>PhoneNumber</th>
+                    @{
+
+                        if (User.IsInRole("Developer")) {
+                            <th>Options</th>
+                        }
+                    }
+                </tr>
+                </thead>
+                <tbody>
+                @{
+                    for (int i = 1; i <= Model.AccountModels.Count; i++) {
+                        <tr>
+                            <th scope="row">@i</th>
+                            <td>@Model.AccountModels[i - 1].Email</td>
+                            <td>@Model.AccountModels[i - 1].LastName</td>
+                            <td>@Model.AccountModels[i - 1].FirstName</td>
+                            <td>@Model.AccountModels[i - 1].Roles</td>
+                            <td>@Model.AccountModels[i - 1].PhoneNumber</td>
+                            @{
+                                if (User.IsInRole("Developer")) {
+                                    <td>
+                                        <div class="btn-group">
+                                            @Html.ActionLink("Edit User", "EditUser", new {Model.AccountModels[i - 1].Email}, new {@class = "btn btn-danger input-sm"})
+                                            <button type="button" class="btn btn-danger dropdown-toggle input-sm" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li>
+                                                    @Html.ActionLink("Edit Roles", "EditRoles", new {Model.AccountModels[i - 1].Email}, null)
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    @Html.ActionLink("Remove", "RemoveUser", new {Model.AccountModels[i - 1].Email}, null)
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                }
+                            }
+
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

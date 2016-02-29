@@ -1,0 +1,155 @@
+﻿@using AlenMotorsDAL
+@model alenMotorsWeb.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Alen Motors - Order";
+}
+
+@section script{
+    <script>
+        $(function() {
+            $('#datetimepicker6').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                format: 'DD/MM/YYYY',
+                minDate: moment(new Date()).add(0, 'days').startOf('day'),
+                widgetPositioning: {
+                    horizontal: 'left',
+                    vertical: 'bottom'
+                }
+            });
+            $('#datetimepicker7').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                format: 'DD/MM/YYYY',
+                minDate: moment(new Date()).add(0, 'days').startOf('day'),
+                widgetPositioning: {
+                    vertical: 'bottom'
+                }
+            });
+            $("#datetimepicker6").on("dp.change", function(e) {
+                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker7").on("dp.change", function(e) {
+                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            });
+
+        });
+
+        $(document).ready(function() {
+            $('#list').click(function(event) {
+                event.preventDefault();
+                $('#products .item').addClass('list-group-item');
+            });
+            $('#grid').click(function(event) {
+                event.preventDefault();
+                $('#products .item').removeClass('list-group-item');
+                $('#products .item').addClass('grid-group-item');
+            });
+        });
+    </script>
+}
+
+
+<div class="mainRow text-center">
+    <h1>Make an order</h1>
+    <hr/>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            @using (Html.BeginForm("Index", "Order", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {encType = "multipart/form-data", @class = "form-inline", role = "form"})) {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <h5>Pickup</h5>
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new {@class = "text-danger"})
+                        <div class="input-group date" id="datetimepicker6">
+                            @Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control text-center"}})
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <h5>Return</h5>
+                        @Html.ValidationMessageFor(model => model.EndDate, "", new {@class = "text-danger"})
+                        <div class="input-group date" id="datetimepicker7">
+                            @Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control text-center"}})
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <input type="submit" value="Show offers" class="btn btn-default btnMain oderSearchBtn"/>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <br />
+    <br/>
+    @{
+        if (Model.Vehicles.Count > 0) {
+            <div class="container">
+                <div class="well well-sm">
+                    <strong>Category Title</strong>
+                    <div class="btn-group">
+                        <a href="#" id="list" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-th-list">
+                    </span>List
+                        </a> <a href="#" id="grid" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-th"></span>Grid
+                        </a>
+                    </div>
+                </div>
+                <div id="products" class="row list-group">
+
+                    @foreach (Vehicle vehicle in Model.Vehicles) {
+                        <div class="item  col-xs-4 col-lg-4">
+                            <div class="thumbnail">
+                                <img class="group list-group-image orderImage" src="@Url.Content("~/Content/GarageImages/")@vehicle.ImageUrl.Replace(" ", String.Empty)"alt=""/>
+                                <div class="caption">
+                                    <h4 class="group inner list-group-item-heading">
+                                        @vehicle.Manufacturer @vehicle.Model @vehicle.ManufacturYear
+                                    </h4>
+                                    <p class="group inner list-group-item-text">
+                                        Cost per day: @vehicle.Price <br/>
+                                        Transmission: @vehicle.Transmission <br />
+                                        Color: @vehicle.Color <br />
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-6">
+                                            <p class="lead">
+                                                Total: @(vehicle.Price * Model.DayCount)$
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-12 col-md-6">
+                                            @{
+                                                if (User.Identity.IsAuthenticated) {
+                                                    @Html.ActionLink("Order", "MakeAnOrder", new {vehicle.VehicleID, Model.StartDate, Model.EndDate, Model.DayCount}, new {@class = "btn btn-default btnMain"})
+
+                                                }
+                                                else {
+                                                    @Html.ActionLink("Login to order", "Login","Account", new { vehicle.VehicleID, Model.StartDate, Model.EndDate, Model.DayCount }, new { @class = "btn btn-default btnMain" })
+
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>

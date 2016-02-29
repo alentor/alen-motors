@@ -11,7 +11,7 @@ namespace AlenMotorsWeb.Controllers {
             return View();
         }
 
-        public ActionResult About() {
+        public ActionResult Contact() {
             return View();
         }
     }
