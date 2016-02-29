@@ -2,6 +2,13 @@
 
 @{ ViewBag.Title = "Alen Motors - Management"; }
 
+
+@section script{
+    <script>
+        $('#removeBranch').prop('disabled', true);
+    </script>
+}
+
 <div class="row mainRow text-center">
     <h1>Management</h1>
 
@@ -76,7 +83,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-11">
-                                <input type="submit" value="Remove Branch" class="btn btn-default btnMain"/>
+                                <input id="removeBranch" type="submit" value="Remove Branch" class="btn btn-default btnMain disabled"/>
                             </div>
                         </div>
                     }
