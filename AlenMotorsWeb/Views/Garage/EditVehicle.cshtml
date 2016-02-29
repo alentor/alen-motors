@@ -53,14 +53,6 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ManagementPassword, htmlAttributes:new {@class = "control-label col-md-4"})
-                <div class="col-md-5">
-                    @Html.EditorFor(model => model.ManagementPassword, new {htmlAttributes = new {@class = "form-control input-sm"}})
-                    @Html.ValidationMessageFor(model => model.ManagementPassword, "", new {@class = "text-danger"})
-                </div>
-            </div>
-
-            <div class="form-group">
                 @Html.LabelFor(model => model.LicensePlate, htmlAttributes:new {@class = "control-label col-md-4"})
                 <div class="col-md-5">
                     @Html.EditorFor(model => model.LicensePlate, new {htmlAttributes = new {@class = "form-control input-sm"}})
