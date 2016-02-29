@@ -223,6 +223,6 @@ D:\Porjects\c#\AlenMotors-27.02.16\AlenMotorsDAL\bin\Debug\System.Web.Helpers.xm
 D:\Porjects\c#\AlenMotors-27.02.16\AlenMotorsDAL\bin\Debug\System.Web.WebPages.xml
 D:\Porjects\c#\AlenMotors-27.02.16\AlenMotorsDAL\bin\Debug\Microsoft.Web.Infrastructure.xml
 D:\Porjects\c#\AlenMotors-27.02.16\AlenMotorsDAL\bin\Debug\System.Web.WebPages.Deployment.xml
-D:\Porjects\c#\AlenMotors-27.02.16\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.csprojResolveAssemblyReference.cache
 D:\Porjects\c#\AlenMotors-27.02.16\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.dll
 D:\Porjects\c#\AlenMotors-27.02.16\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.pdb
+D:\Porjects\c#\AlenMotors-27.02.16\AlenMotorsDAL\obj\Debug\AlenMotorsDAL.csprojResolveAssemblyReference.cache
