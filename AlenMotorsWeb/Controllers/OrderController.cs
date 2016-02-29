@@ -53,6 +53,39 @@ namespace alenMotorsWeb.Controllers {
             return View(modelToReturn);
         }
 
+        // GET => Order/OrderGarage
+        [AllowAnonymous]
+        public ActionResult OrderGarage(string vehicle) {
+            OrderGarageViewModel model = new OrderGarageViewModel();
+            VehicleManagerResult vehicleManagerResult = VehicleManager.GetVehicleById(int.Parse(vehicle));
+            if (!vehicleManagerResult.Success) {
+                ModelState.AddModelError("", vehicleManagerResult.ErrorMessage);
+                return RedirectToAction("Index", "Order");
+            }
+            model.Vehicle = vehicleManagerResult.Vehicle;
+            ;
+            return View(model);
+        }
+
+        // GET => Order/OrderGarage
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult OrderGarage(OrderGarageViewModel model) {
+            DateTime startDate;
+            DateTime endDate;
+            try {
+                startDate = DateTime.ParseExact(model.StartDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                endDate = DateTime.ParseExact(model.EndDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
+            }
+            TimeSpan timeSpan = endDate - startDate;
+            int dayCount = timeSpan.Days == 0 ? 1 : timeSpan.Days;
+            return RedirectToAction("MakeAnOrder", new { model.Vehicle.VehicleID, model.StartDate, model.EndDate, dayCount });
+        }
+
         // GET => Order/MakeAnOrder
         [Authorize(Roles = "User")]
         public ActionResult MakeAnOrder(string vehicleID, string startDate, string endDate, string dayCount) {
@@ -62,7 +95,7 @@ namespace alenMotorsWeb.Controllers {
                 return RedirectToAction("Index", "Order");
             }
             ModelState.AddModelError("", "Ordered added Successfully");
-            return RedirectToAction("Account", "Account");
+            return RedirectToAction("ViewOrders", "Order");
         }
 
         // GET => Order/ViewOrders
@@ -78,7 +111,10 @@ namespace alenMotorsWeb.Controllers {
                 ModelState.AddModelError("", vehicleManagerResult.ErrorMessage);
                 return RedirectToAction("Account", "Account");
             }
-            OrderListUserViewModel model = new OrderListUserViewModel {OrderList = orderManagerResult.Orders, Vehicles = vehicleManagerResult.VehicleList};
+            OrderListUserViewModel model = new OrderListUserViewModel {
+                OrderList = orderManagerResult.Orders,
+                Vehicles = vehicleManagerResult.VehicleList
+            };
             return View(model);
         }
 

@@ -26,6 +26,7 @@
                     <tr>
                         <th>#</th>
                         <th>Photo</th>
+                        <th>VehicleID</th>
                         <th>Model</th>
                         <th>Price</th>
                         <th>Color</th>
@@ -34,6 +35,7 @@
                         <th>Manufacturer</th>
                         <th>Status</th>
                         <th>Branch</th>
+                        <th>Order</th>
                         @{
                             if (User.IsInRole("Manager")) {
                                 <th>Options</th>
@@ -49,7 +51,7 @@
                                 <td class="col-md-2">
                                     <img src="@Url.Content("~/Content/GarageImages/")@Model.VehicleList[i - 1].ImageUrl.Replace(" ", String.Empty)" class="img-rounded GarageImg"/>
                                 </td>
-
+                                <td>@Model.VehicleList[i - 1].VehicleID</td>
                                 <td>@Model.VehicleList[i - 1].Model</td>
                                 <td>@Model.VehicleList[i - 1].Price$</td>
                                 <td>@Model.VehicleList[i - 1].Color</td>
@@ -64,6 +66,9 @@
                                         }
                                     }
                                 }
+                                <td>
+                                    @Html.ActionLink("Order", "OrderGarage","Order", new { vehicle = @Model.VehicleList[i-1].VehicleID }, new { @class = "btn btn-default btnMain" })
+                                </td>
                                 @{
                                     if (User.IsInRole("Manager")) {
                                         <td>

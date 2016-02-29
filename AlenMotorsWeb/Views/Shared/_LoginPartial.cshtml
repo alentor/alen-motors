@@ -6,10 +6,11 @@
         <li>
             @Html.ActionLink("[Manage]", "Index", "Management")
         </li>
-        <li>
-            @Html.ActionLink("Garage", "Index", "Garage")
-        </li>
+
     }
+    <li>
+        @Html.ActionLink("Garage", "Index", "Garage")
+    </li>
     <li>
         @Html.ActionLink("Order", "Index", "Order")
     </li>
@@ -54,6 +55,9 @@ else {
                 }
             </li>
             <li>
+                @Html.ActionLink("Garage", "Index", "Garage")
+            </li>
+            <li>
                 @Html.ActionLink("Order", "Index", "Order")
             </li>
             <li>
@@ -75,6 +79,9 @@ else {
                     </div>
                     <input type="submit" value="Log in" class="btn btn-sm btnMain"/>
                 }
+            </li>
+            <li>
+                @Html.ActionLink("Garage", "Index", "Garage")
             </li>
             <li>
                 @Html.ActionLink("Order", "Index", "Order")

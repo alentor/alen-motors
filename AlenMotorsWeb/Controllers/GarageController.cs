@@ -11,8 +11,8 @@ using Microsoft.ApplicationInsights.Channel;
 
 namespace alenMotorsWeb.Controllers {
     public class GarageController: Controller {
-        [Authorize(Roles = "Employee")]
         // GET => Garage/Index
+        [AllowAnonymous]
         public ActionResult Index() {
             GarageViewModel model = new GarageViewModel();
             if (TempData["AddVehicle"] != null) {

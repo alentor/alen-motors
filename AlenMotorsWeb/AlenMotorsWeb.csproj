@@ -414,6 +414,7 @@
     <None Include="Views\Management\ViewAllOrders.cshtml" />
     <None Include="Views\Management\ViewVehicle.cshtml" />
     <None Include="Views\Order\Index.cshtml" />
+    <None Include="Views\Order\OrderGarage.cshtml" />
     <None Include="Views\Order\ViewOrders.cshtml" />
     <None Include="Views\Order\ViewVehicle.cshtml" />
     <None Include="Web.Debug.config">

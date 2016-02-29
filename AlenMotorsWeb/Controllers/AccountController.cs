@@ -55,7 +55,7 @@ namespace alenMotorsWeb.Controllers {
             }
             ModelState.AddModelError("", registerResult.ErrorMessage);
             return View(model);
-        }
+        }   
 
         // GET => /Account/Login
         [AllowAnonymous]

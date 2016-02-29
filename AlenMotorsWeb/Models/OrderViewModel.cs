@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Web;
 using AlenMotorsDAL;
@@ -23,6 +24,19 @@ namespace alenMotorsWeb.Models {
         public OrderViewModel() {
             Vehicles = new List <Vehicle>();
         }
+    }
+
+    public class OrderGarageViewModel {
+        public Vehicle Vehicle{get; set;}
+
+        [Required]
+        [Display(Name = "Pickup Date")]
+        public string StartDate{get; set;}
+
+
+        [Required]
+        [Display(Name = "Return Date")]
+        public string EndDate{get; set;}
     }
 
     public class OrderListUserViewModel {
