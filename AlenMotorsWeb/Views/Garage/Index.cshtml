@@ -39,7 +39,7 @@
                         <th>Order</th>
                         @{
                             if (User.IsInRole("Manager")) {
-                                <th>Options</th>
+                                <th class="col-md-2">Options</th>
                             }
                         }
                     </tr>
@@ -83,7 +83,8 @@
                                                 <ul class="dropdown-menu" role="menu">
                                                     <li>
                                                         @Html.ActionLink("Remove", "RemoveVehicle", new {Model.VehicleList[i - 1].VehicleID}, null)
-                                                    </li>
+                                                    </li>                        <th>Price</th>
+
                                                 </ul>
                                             </div>
                                         </td>
